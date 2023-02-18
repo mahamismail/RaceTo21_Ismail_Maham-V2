@@ -7,6 +7,7 @@ namespace RaceTo21
     {
         int numberOfPlayers; // number of players in current game
         List<Player> players = new List<Player>(); // list of objects containing player data
+        List<Player> playersInRound = new List<Player>(); // list of objects containing player data = new List<Player>(); 
         CardTable cardTable; // object in charge of displaying game information
         Deck deck = new Deck(); // deck of cards
         int currentPlayer = 0; // current player on list
@@ -52,6 +53,8 @@ namespace RaceTo21
                 {
                     var name = cardTable.GetPlayerName(count);
                     AddPlayer(name); // NOTE: player list will start from 0 index even though we use 1 for our count here to make the player numbering more human-friendly
+                    
+                    List<Player> playersInRound = players;
                 }
                 nextTask = Task.IntroducePlayers;
             }
@@ -111,14 +114,14 @@ namespace RaceTo21
                     Player overallWinner = DoOverallScoring();
                     cardTable.ShowScoreboard(players);
 
-                    if (!cardTable.PlayAnotherRound()) // If they don't want to play another round, end it here.
-                    {
-                        nextTask = Task.GameOver; // ------------------------------------------------------------
-                    }
-                    else if (overallWinner != null)
+                    if (overallWinner != null)
                     {
                         cardTable.AnnounceOverallWinner(overallWinner);
                         nextTask = Task.GameOver;
+                    }
+                    else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round, end it here.
+                    {
+                        nextTask = Task.GameOver; // ------------------------------------------------------------
                     }
                     else
                     {
@@ -329,6 +332,7 @@ namespace RaceTo21
         {
             foreach (var player in players)
             {
+                int counter = 0;
 
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
@@ -339,12 +343,21 @@ namespace RaceTo21
                 }*/
                 if (player.status == PlayerStatus.bust) // player went bust...
                 {
+                    counter++;
                     player.overallScore -= (player.score - 21) ; // DEDUCT THE SCORE FROM THE PLAYER'S OVERALL SCORE IF BUST
 
                     /*if (player.overallScore < 0)
                     {
                         player.overallScore = 0;
                     }*/
+                }
+                if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // player went bust...
+                {
+                    player.overallScore += player.score;
+                    //if (counter == players.Count - 1)
+                    //{
+                    //    player.overallScore += player.score;
+                    //}
                 }
 
                 if (player.overallScore >= cardTable.overallTarget)
@@ -360,7 +373,7 @@ namespace RaceTo21
         private void ResetRound(Player winner)
         {   
 
-            players.Remove(winner);
+            //players.Remove(winner);
             currentPlayer = 0;
             deck = new Deck();
             deck.Shuffle();

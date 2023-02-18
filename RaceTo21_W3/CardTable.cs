@@ -181,11 +181,11 @@ namespace RaceTo21
         {
             //(while (player != null)
             //{*
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Console.WriteLine(player.name + " wins the game!");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine($"~~{player.name} wins the game!~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             Console.Write("Press <Enter> to exit... ");
             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
