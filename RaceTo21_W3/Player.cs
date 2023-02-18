@@ -9,7 +9,6 @@ namespace RaceTo21
 		public List<Card> cards = new List<Card>();
 		public PlayerStatus status = PlayerStatus.active;
 		public int score;
-		public int gameScore;
 		public int overallScore;
 
 		public Player(string n)
@@ -24,6 +23,12 @@ namespace RaceTo21
 		{
 			Console.WriteLine("Hello, my name is " + name + " and I am player #" + playerNum);
 		}
+
+		public void ResetPlayer()
+        {
+			status = PlayerStatus.active;
+			cards.Clear();
+        }
 	}
 }
 

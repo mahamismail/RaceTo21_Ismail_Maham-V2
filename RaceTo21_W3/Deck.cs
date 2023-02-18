@@ -10,7 +10,8 @@ namespace RaceTo21
 
         public Deck()
         {
-            Console.WriteLine("*********** Building deck...");
+            Console.WriteLine("================================");
+            Console.WriteLine("********* Building deck ********");
             string[] suits = { "Spades", "Hearts", "Clubs", "Diamonds" };
             int cardCounter = 0;
 

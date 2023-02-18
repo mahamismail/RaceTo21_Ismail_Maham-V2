@@ -11,7 +11,7 @@ namespace RaceTo21
         }
 
         public int numOfCardsPicked; // public int used in HowManyCards()
-
+        public int overallTarget = 50; // the final overall score needed by on eplayer to win the game
 
 
         /* Function: ShowPlayers() ****************
@@ -81,6 +81,7 @@ namespace RaceTo21
             Console.WriteLine();
             Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
             string response = Console.ReadLine();
+            Console.WriteLine();
 
             if (response.ToUpper().StartsWith("3")) // Pick 3
             {
@@ -100,9 +101,10 @@ namespace RaceTo21
             }
             else
             {
+                //Edge Case Bug: If press enter or any other invalid input, the game doesn't move forward. Loops.Keeps asking for cards.
                 Console.WriteLine("Invalid number of cards. Choose 0, 1, 2, or 3!");
                 Console.WriteLine();
-                Console.Write("How many players?");
+                Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
                 response = Console.ReadLine();
             }
             return numOfCardsPicked;
@@ -161,32 +163,68 @@ namespace RaceTo21
         {
             if (player != null)
             {
-                Console.WriteLine(player.name + " wins!");
+                Console.WriteLine();
+                Console.WriteLine($">>>>>>>>>>>>>> {player.name} wins this round! <<<<<<<<<<<<<<<<");
+                Console.WriteLine();
             }
             else
             {
-                Console.WriteLine("Everyone busted!");
+                Console.WriteLine();
+                Console.WriteLine(">>>>>>>>>>>>> Everyone busted! <<<<<<<<<<<<<<<<<<<");
+                Console.WriteLine();
             }
+        }
+
+        /* Function: AnnounceOverallWinner() **********
+        ************************************/
+        public void AnnounceOverallWinner(Player player)
+        {
+            //(while (player != null)
+            //{*
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine(player.name + " wins the game!");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
             Console.Write("Press <Enter> to exit... ");
-            while (Console.ReadKey().Key != ConsoleKey.Enter) { }
+            while (Console.ReadKey().Key != ConsoleKey.Enter) { };
+            //}
         }
 
 
-        /* Function: ShowOverallScore() ****************
-         * Displays overall scores of all players
-         * Called by Game object at the end of the game.
-         * Game object provides player name and overallScore.
-         *****************************************/
-        public void ShowOverallScore(Player player)
+        public void ShowScoreboard(List<Player> players)
         {
-            Console.Write(player.name + "'s Overall Score: " + player.overallScore);
-        }
-
-        public void ShowOverAllScores(List<Player> players)
-        {
+            Console.WriteLine("================================");
+            Console.WriteLine("~~~~~~~~~~ Score Board ~~~~~~~~~");
+            Console.WriteLine();
+            Console.WriteLine($"First player to accumulate {overallTarget} wins!");
+            Console.WriteLine();
             foreach (Player player in players)
             {
-                ShowOverallScore(player);
+                Console.WriteLine($"{player.name}'s overall score is {player.overallScore}/{overallTarget}");
+            }
+            Console.WriteLine("================================");
+        }
+
+        public bool PlayAnotherRound()
+        {
+            while (true)
+            {
+                Console.Write("Would you like to continue? (Y/N)");
+                string response = Console.ReadLine();
+                if (response.ToUpper().StartsWith("Y"))
+                {
+                    return true;
+                }
+                else if (response.ToUpper().StartsWith("N"))
+                {
+                    return false;
+                }
+                else
+                {
+                    Console.WriteLine("Please answer Y(es) or N(o)!");
+                }
             }
         }
     }

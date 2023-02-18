@@ -12,7 +12,7 @@ namespace RaceTo21
         int currentPlayer = 0; // current player on list
         public Task nextTask; // keeps track of game state
         private bool cheating = false; // lets you cheat for testing purposes if true
-        public int overallTarget = 47; // the final overall score needed by on eplayer to win the game
+
         public int rounds = 0; // the number of rounds played
 
         public Game(CardTable c)
@@ -39,14 +39,15 @@ namespace RaceTo21
          */
         public void DoNextTask()
         {
-            Console.WriteLine("================================"); // this line should be elsewhere right?
             if (nextTask == Task.GetNumberOfPlayers)
             {
+                Console.WriteLine("================================");
                 numberOfPlayers = cardTable.GetNumberOfPlayers();
                 nextTask = Task.GetNames;
             }
             else if (nextTask == Task.GetNames)
             {
+                Console.WriteLine("================================");
                 for (var count = 1; count <= numberOfPlayers; count++)
                 {
                     var name = cardTable.GetPlayerName(count);
@@ -55,35 +56,34 @@ namespace RaceTo21
                 nextTask = Task.IntroducePlayers;
             }
             else if (nextTask == Task.IntroducePlayers)
-            {   
-                cardTable.ShowPlayers(players);
-                nextTask = Task.ShowBigScores; // DISPLAY OVERALL SCORES
-            }
-            else if (nextTask == Task.ShowBigScores)
             {
-                //cardTable.ShowOverallScore(); // CALL FUNCTION SHOW OVERALL SCORE ////////////////////// NOT WORKING
+                Console.WriteLine("================================");
+                cardTable.ShowPlayers(players);
+                cardTable.ShowScoreboard(players);
+                Console.Write($"Starting Round # {rounds + 1}");
                 nextTask = Task.PlayerTurn;
             }
             else if (nextTask == Task.PlayerTurn)
             {
+                Console.WriteLine();
+                Console.WriteLine("================================");
                 cardTable.ShowHands(players);
                 Player player = players[currentPlayer];
                 if (player.status == PlayerStatus.active)
                 {
-                    if (cardTable.HowManyCards(player) == 0) // if false make the player stay
+                    
+                    if (cardTable.HowManyCards(player) == 0) // if 0 cards picked then player chose to stay
                     {
                         player.status = PlayerStatus.stay;
                     }
-                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) //if OfferACard is true call 1, 2, 3 cards then check score
+                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) //If card is less than or equal to 3 cards enter this
                     {
                         int numOfCards = cardTable.numOfCardsPicked;
-
                         for (int i = 0; i < numOfCards; i++) // this loops according to the number of cards needed. If 3, deals out and adds 3 cards.
                         {
                             Card card = deck.DealTopCard();
                             player.cards.Add(card);
                         }
-
                         player.score = ScoreHand(player);
 
                         if (player.score > 21)
@@ -95,21 +95,36 @@ namespace RaceTo21
                             player.status = PlayerStatus.win;
                         }
                     }
-                    else
-                    {
-                        player.status = PlayerStatus.stay;
-                    }
                 }
                 cardTable.ShowHand(player);
                 nextTask = Task.CheckForEnd;
             }
             else if (nextTask == Task.CheckForEnd)
             {
-                if (CheckForWinAndBust() || !CheckActivePlayers())
+                if (CheckForRoundWin() || !CheckActivePlayers())
                 {
+                    rounds++;
+                    Console.WriteLine("================================");
                     Player winner = DoFinalScoring();
                     cardTable.AnnounceWinner(winner);
-                    nextTask = Task.GameOver;
+
+                    Player overallWinner = DoOverallScoring();
+                    cardTable.ShowScoreboard(players);
+
+                    if (!cardTable.PlayAnotherRound()) // If they don't want to play another round, end it here.
+                    {
+                        nextTask = Task.GameOver; // ------------------------------------------------------------
+                    }
+                    else if (overallWinner != null)
+                    {
+                        cardTable.AnnounceOverallWinner(overallWinner);
+                        nextTask = Task.GameOver;
+                    }
+                    else
+                    {
+                        ResetRound(winner);
+                        nextTask = Task.PlayerTurn;
+                    }
                 }
                 else
                 {
@@ -179,9 +194,68 @@ namespace RaceTo21
             return false; // everyone has stayed or busted, or someone won!
         }
 
-        public bool CheckForWinAndBust()
+        public bool CheckForRoundWin()
         {
+            /* if playerstatus is win then return true
+             * if playerstatus is stay or active, false, unless counter is one less the number of players (counter = numOfPlayers -1) 
+             * if playerstatus is bust return false.
+             */
+
             int counter = 0;
+            foreach (var player in players)
+            {
+                if (player.status == PlayerStatus.win)
+                {
+                    return true;
+                }
+                else if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
+                {
+                    if (counter == players.Count - 1) 
+                    {
+                        player.status = PlayerStatus.win;
+                        return true;
+                    }
+                }
+                else if (player.status == PlayerStatus.bust)
+                {
+                    counter++;
+                    if (counter == players.Count - 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+
+            /*int counter = 0;
+
+            foreach (var player in players)
+            {
+                if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
+                {
+                    if (counter == players.Count - 1) // if only one person is not busted, someone won
+                    {
+                        var status = player.status;
+                        status = PlayerStatus.win;
+                        return true;
+                    }
+                    return false; // means at least 2 people are still playing.
+                }    
+                else if (player.status == PlayerStatus.win) // if one player scores 21 points
+                {
+                    return true;
+                }
+                else if (player.status == PlayerStatus.bust) // if more than 21 points, player busted.
+                {
+                    counter++;
+                    return false;
+                }            
+            }
+            return false; // everyone has stayed or busted, or someone won!
+            */
+            //-------------------------------------------------------------------------------------------
+
+            /*int counter = 0;
 
             foreach (var player in players)
             {
@@ -207,31 +281,29 @@ namespace RaceTo21
                     }
                 }
                 else if (player.status == PlayerStatus.stay)
+                {
+                    if (counter == players.Count - 1)
                     {
-                        if (counter == players.Count - 1)
-                        {
                         var status = player.status;
                         status = PlayerStatus.win;
                         return true;
-                        }
                     }
+                }
             }
             return false; // everyone has stayed or busted, or someone won!
+            */
         }
 
         public Player DoFinalScoring()
         {
             int highScore = 0;
-            int overallScore;
 
             foreach (var player in players)
             {
                 cardTable.ShowHand(player);
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
-                    overallScore = player.gameScore;
-                    overallScore = overallScore + player.score; // ADD THE SCORE TO THE PLAYER'S OVERALL SCORE IF WIN
-
+                    highScore = player.score;
                     return player;
                 }
                 if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // still could win...
@@ -239,14 +311,7 @@ namespace RaceTo21
                     if (player.score > highScore)
                     {
                         highScore = player.score; // PLAYER'S OVERALL SCORE REMAINS THE SAME IF STAY
-
-                        overallScore = player.gameScore;
                     }
-                }
-                if (player.status == PlayerStatus.bust) // player went bust...
-                {
-                    overallScore = player.gameScore;
-                    overallScore = overallScore - player.score; // DEDUCT THE SCORE FROM THE PLAYER'S OVERALL SCORE IF BUST
                 }
             }
             if (highScore > 0) // someone scored, anyway!
@@ -256,5 +321,58 @@ namespace RaceTo21
             }
             return null; // everyone must have busted because nobody won!
         }
+
+
+        /* Function: DoOverallScoring) ****************
+         *****************************************/
+        public Player DoOverallScoring()
+        {
+            foreach (var player in players)
+            {
+
+                if (player.status == PlayerStatus.win) // someone hit 21
+                {
+                    player.overallScore += player.score; // ADD THE SCORE TO THE PLAYER'S OVERALL SCORE IF WIN
+                }
+                /*if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // still could win...
+                {
+                }*/
+                if (player.status == PlayerStatus.bust) // player went bust...
+                {
+                    player.overallScore -= (player.score - 21) ; // DEDUCT THE SCORE FROM THE PLAYER'S OVERALL SCORE IF BUST
+
+                    /*if (player.overallScore < 0)
+                    {
+                        player.overallScore = 0;
+                    }*/
+                }
+
+                if (player.overallScore >= cardTable.overallTarget)
+                {
+                    return player;
+                }
+            }
+
+            return null; // everyone must have busted because nobody won!
+
+        }
+
+        private void ResetRound(Player winner)
+        {   
+
+            players.Remove(winner);
+            currentPlayer = 0;
+            deck = new Deck();
+            deck.Shuffle();
+
+            foreach (Player player in players)
+            {
+                player.ResetPlayer();
+            }
+            Console.WriteLine("================================");
+            Console.Write($"Starting Round # {rounds + 1}");
+
+        }
+
     }
 }

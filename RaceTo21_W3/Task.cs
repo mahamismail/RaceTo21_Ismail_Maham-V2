@@ -8,7 +8,6 @@ namespace RaceTo21
         IntroducePlayers,
         PlayerTurn,
         CheckForEnd,
-        ShowBigScores,
         GameOver
     }
 }
