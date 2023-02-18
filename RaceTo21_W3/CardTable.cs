@@ -10,13 +10,13 @@ namespace RaceTo21
             Console.WriteLine("Setting Up Table...");
         }
 
-        public int numOfCardsPicked; // public int used in HowManyCards()
-        public int overallTarget = 50; // the final overall score needed by on eplayer to win the game
+        public int numOfCardsPicked; // public int used in HowManyCards() to determine how many cards player chooses to pick
+        public int overallTarget = 50; // the final overall score needed by one player to win the whole game.
 
 
         /* Function: ShowPlayers() ****************
          * Displays names of all players and introduces them by table position.
-         * Called by Game object during player turn.
+         * Called by Game object during player turns.
          * Game object provides list of players
          * Calls Introduce method on each player object.
          *****************************************/
@@ -31,7 +31,7 @@ namespace RaceTo21
         /* Function: GetNumberOfPlayers() ****************
          * Reads the user input from player.
          * Called by Game object during player turn.
-         * Returns number of players to Game object.
+         * Returns console input as an int: numberOfPlayers
          *****************************************/
         public int GetNumberOfPlayers()
         {
@@ -52,7 +52,7 @@ namespace RaceTo21
          * Reads the user input for name.
          * Called by Game object during player turn.
          * Game object provides player number
-         * Returns name of player to Game object
+         * Returns console input as a string: response (name of the player).
          *****************************************/
         public string GetPlayerName(int playerNum)
         {
@@ -74,7 +74,7 @@ namespace RaceTo21
          * Uses player as parameter.
          * Uses cardTable's public int numOfCardsPicked
          * Called in the Game object during Player Turn
-         * Returns numOfCardsPicked
+         * Returns console input as an int: numOfCardsPicked
          ************************************/
         public int HowManyCards(Player player)
         {
@@ -99,20 +99,22 @@ namespace RaceTo21
             {
                 numOfCardsPicked = 0;
             }
-            else
+            else // if output other than 0, 1, 2, 3 put in then tell them to get it write.
             {
-                //Edge Case Bug: If press enter or any other invalid input, the game doesn't move forward. Loops.Keeps asking for cards.
                 Console.WriteLine("Invalid number of cards. Choose 0, 1, 2, or 3!");
                 Console.WriteLine();
                 Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
                 response = Console.ReadLine();
             }
-            return numOfCardsPicked;
+            return numOfCardsPicked; // returns 0, 1, 2 or 3 only
         }
 
 
         /* Function: ShowHand() **********
-        ************************************/
+         * Displays all cards in the player's hand
+         * Called by Game object during Player Turns and ShowHands() method in the current CardTable class
+         * Writes on console.
+         ************************************/
         public void ShowHand(Player player)
         {
             if (player.cards.Count > 0)
@@ -124,7 +126,7 @@ namespace RaceTo21
                     {
                         Console.Write(card.displayName);
                     }
-                    else if (player.cards.IndexOf(card) == player.cards.Count - 1) // if the card is the latest card
+                    else if (player.cards.IndexOf(card) == player.cards.Count - 1) // if the card is the last card
                     {
                         Console.Write(card.displayName + ". ");
                     }
@@ -144,10 +146,9 @@ namespace RaceTo21
 
         /* Function: ShowHands() **********
          * Shows the hands of each player from the list of players.
-         * Uses list of player as parameter.
-         * Uses cardTable's public int numOfCardsPicked
+         * Utilizes the list of players.
          * Called in the Game object during Player Turn
-         * Returns numOfCardsPicked
+         * Calls showHand() method.
          ************************************/
         public void ShowHands(List<Player> players)
         {
@@ -158,6 +159,9 @@ namespace RaceTo21
         }
 
         /* Function: AnnounceWinner() **********
+         * Displays the winner in the current round.
+         * Called by the Game object during Player Turn
+         * Writes on console.
         ************************************/
         public void AnnounceWinner(Player player)
         {
@@ -167,7 +171,7 @@ namespace RaceTo21
                 Console.WriteLine($">>>>>>>>>>>>>> {player.name} wins this round! <<<<<<<<<<<<<<<<");
                 Console.WriteLine();
             }
-            else
+            else // if there is no player aka player is null
             {
                 Console.WriteLine();
                 Console.WriteLine(">>>>>>>>>>>>> Everyone busted! <<<<<<<<<<<<<<<<<<<");
@@ -176,6 +180,9 @@ namespace RaceTo21
         }
 
         /* Function: AnnounceOverallWinner() **********
+         * Displays the overall winner of the whole game.
+         * Called by the Game object during Player Turn
+         * Writes on console.
         ************************************/
         public void AnnounceOverallWinner(Player player)
         {
@@ -187,12 +194,17 @@ namespace RaceTo21
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
-            Console.Write("Press <Enter> to exit... ");
+            Console.Write("Press <Enter> to exit... "); // GAME END.
             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
             //}
         }
 
-
+        /* Function: ShowScoreBoard() **********
+         * Loops through and displays the scoreboard aka Overall score of all players.
+         * Called by the Game object during Player Turn.
+         * Utilizes the list of players. 
+         * Writes on console
+        ************************************/
         public void ShowScoreboard(List<Player> players)
         {
             Console.WriteLine("================================");
@@ -207,6 +219,11 @@ namespace RaceTo21
             Console.WriteLine("================================");
         }
 
+        /* Function: PlayAnotherRound() **********
+         * Check console input if player wants to continue on to another round or not.
+         * Returns bool. True for Yes, False for No.
+         * Called by the Game object during Player Turn
+        ************************************/
         public bool PlayAnotherRound()
         {
             while (true)
@@ -227,5 +244,7 @@ namespace RaceTo21
                 }
             }
         }
+
+
     }
 }

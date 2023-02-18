@@ -26,27 +26,32 @@ namespace RaceTo21
 
         /* Adds a player to the current game
          * Called by DoNextTask() method
-         */
+    
+        /* Function: AddPlayer() **********
+         * Adds new player and it's name to the list.
+         * Called by DoNextTask() method in Game object
+        ************************************/
         public void AddPlayer(string n)
         {
             players.Add(new Player(n));
 
         }
 
-        /* Figures out what task to do next in game
+        /* Function: DoNextTask() **********
+         * Figures out what task to do next in game
          * as represented by field nextTask
          * Calls methods required to complete task
          * then sets nextTask.
-         */
+        ************************************/
         public void DoNextTask()
         {
-            if (nextTask == Task.GetNumberOfPlayers)
+            if (nextTask == Task.GetNumberOfPlayers) // gets number of player
             {
                 Console.WriteLine("================================");
                 numberOfPlayers = cardTable.GetNumberOfPlayers();
                 nextTask = Task.GetNames;
             }
-            else if (nextTask == Task.GetNames)
+            else if (nextTask == Task.GetNames) // get the name of player
             {
                 Console.WriteLine("================================");
                 for (var count = 1; count <= numberOfPlayers; count++)
@@ -58,7 +63,7 @@ namespace RaceTo21
                 }
                 nextTask = Task.IntroducePlayers;
             }
-            else if (nextTask == Task.IntroducePlayers)
+            else if (nextTask == Task.IntroducePlayers) // player is introduced in console
             {
                 Console.WriteLine("================================");
                 cardTable.ShowPlayers(players);
@@ -70,16 +75,21 @@ namespace RaceTo21
             {
                 Console.WriteLine();
                 Console.WriteLine("================================");
-                cardTable.ShowHands(players);
+                cardTable.ShowHands(players); // players hands are shown in console
                 Player player = players[currentPlayer];
                 if (player.status == PlayerStatus.active)
                 {
-                    
-                    if (cardTable.HowManyCards(player) == 0) // if 0 cards picked then player chose to stay
+                    /*********************** Level 1 Feature *******************************
+                    A player can choose to draw up to 3 cards each turn, but they get all 
+                    cards at once; they don’t get to decide after each card
+
+                    Meethod created HowManyCards()
+                    ************************************************************************/
+                    if (cardTable.HowManyCards(player) == 0) // if player picks 0 cards their status changes to STAY.
                     {
                         player.status = PlayerStatus.stay;
                     }
-                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) //If card is less than or equal to 3 cards enter this
+                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) // If player picks less than or equal to 3 cards, enter this.
                     {
                         int numOfCards = cardTable.numOfCardsPicked;
                         for (int i = 0; i < numOfCards; i++) // this loops according to the number of cards needed. If 3, deals out and adds 3 cards.
@@ -87,7 +97,7 @@ namespace RaceTo21
                             Card card = deck.DealTopCard();
                             player.cards.Add(card);
                         }
-                        player.score = ScoreHand(player);
+                        player.score = ScoreHand(player); // immediately checks if score made player go bust or win.
 
                         if (player.score > 21)
                         {
@@ -99,34 +109,47 @@ namespace RaceTo21
                         }
                     }
                 }
-                cardTable.ShowHand(player);
+                cardTable.ShowHand(player); // show hand to players.
                 nextTask = Task.CheckForEnd;
             }
-            else if (nextTask == Task.CheckForEnd)
+            else if (nextTask == Task.CheckForEnd) // check if the Round is ending
             {
-                if (CheckForRoundWin() || !CheckActivePlayers())
+                /*********************** Level 2 Feature *******************************
+        
+                Only the winning player earns points equal to their score that round. 
+                    o Players who went “bust” lose points equal to their hand total minus 21. 
+                    o Game ends when one player reaches an agreed-upon score (for example, 50 points)
+
+                >Player plays multiple rounds until one player reaches overallTarget.<
+
+                Methods added: ResetRound(), ResetPlayer(), AnnounceOverallWinner(), 
+                DoOverallScoring(), PlayAnotherRound, ShowScoreboard()
+
+                ************************************************************************/
+
+                if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
                 {
                     rounds++;
                     Console.WriteLine("================================");
-                    Player winner = DoFinalScoring();
-                    cardTable.AnnounceWinner(winner);
+                    Player winner = DoRoundScoring(); // adds scores of players within the Round.
+                    cardTable.AnnounceWinner(winner); // announce the winner of the round
 
-                    Player overallWinner = DoOverallScoring();
-                    cardTable.ShowScoreboard(players);
+                    Player overallWinner = DoOverallScoring(); // adds to the overall scoring and updates scoreboard.
+                    cardTable.ShowScoreboard(players); // displays scoreboard
 
-                    if (overallWinner != null)
+                    if (overallWinner != null) // if there is a winner
                     {
-                        cardTable.AnnounceOverallWinner(overallWinner);
-                        nextTask = Task.GameOver;
+                        cardTable.AnnounceOverallWinner(overallWinner); // announce winner
+                        nextTask = Task.GameOver; // GAME ENDS
                     }
-                    else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round, end it here.
+                    else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
                     {
-                        nextTask = Task.GameOver; // ------------------------------------------------------------
+                        nextTask = Task.GameOver; // GAME ENDS
                     }
-                    else
+                    else // if continuing to the next round then:
                     {
-                        ResetRound(winner);
-                        nextTask = Task.PlayerTurn;
+                        ResetRound(); // Reset the players.
+                        nextTask = Task.PlayerTurn; // Move on to the next turn in the next round
                     }
                 }
                 else
@@ -146,6 +169,13 @@ namespace RaceTo21
             }
         }
 
+
+        /* Function: ScoreHand() **********
+         * Figures out what task to do next in game
+         * as represented by field nextTask
+         * Calls methods required to complete task
+         * then sets nextTask.
+        ************************************/
         public int ScoreHand(Player player)
         {
             int score = 0;
@@ -185,6 +215,11 @@ namespace RaceTo21
 
         }
 
+        /* Function: CheckActivePlayers() **********
+         * Checks if each player is acrtive or not
+         * Returns true if at least one player is active
+         * Called in Game Tasks.
+        ************************************/
         public bool CheckActivePlayers()
         {
             foreach (var player in players)
@@ -197,6 +232,11 @@ namespace RaceTo21
             return false; // everyone has stayed or busted, or someone won!
         }
 
+        /* Function: CheckRoundWin() **********
+         * Checks if any player has won.
+         * Returns true if a player has won
+         * Called by DoNextTask() method
+        ************************************/
         public bool CheckForRoundWin()
         {
             /* if playerstatus is win then return true
@@ -229,75 +269,14 @@ namespace RaceTo21
                 }
             }
             return false;
-
-            /*int counter = 0;
-
-            foreach (var player in players)
-            {
-                if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
-                {
-                    if (counter == players.Count - 1) // if only one person is not busted, someone won
-                    {
-                        var status = player.status;
-                        status = PlayerStatus.win;
-                        return true;
-                    }
-                    return false; // means at least 2 people are still playing.
-                }    
-                else if (player.status == PlayerStatus.win) // if one player scores 21 points
-                {
-                    return true;
-                }
-                else if (player.status == PlayerStatus.bust) // if more than 21 points, player busted.
-                {
-                    counter++;
-                    return false;
-                }            
-            }
-            return false; // everyone has stayed or busted, or someone won!
-            */
-            //-------------------------------------------------------------------------------------------
-
-            /*int counter = 0;
-
-            foreach (var player in players)
-            {
-                if (player.status == PlayerStatus.win)
-                {
-                    return true;
-                }
-                else if (player.status == PlayerStatus.active)
-                {
-                    if (counter == players.Count - 1)
-                    {
-                        return true;
-                    }
-                    return false; // at least one player is still going!
-                }
-                else if (player.status == PlayerStatus.bust)
-                {
-                    counter++;
-
-                    if (counter == players.Count - 1)
-                    {
-                        return true;
-                    }
-                }
-                else if (player.status == PlayerStatus.stay)
-                {
-                    if (counter == players.Count - 1)
-                    {
-                        var status = player.status;
-                        status = PlayerStatus.win;
-                        return true;
-                    }
-                }
-            }
-            return false; // everyone has stayed or busted, or someone won!
-            */
         }
 
-        public Player DoFinalScoring()
+        /* Function: DoRoundScoring() **********
+         * Updates scores. Gets the player that won in the round.
+         * Called by method DoNextTask() in Game.
+         * Returns a player (who is the winner of the round)
+        ************************************/
+        public Player DoRoundScoring()
         {
             int highScore = 0;
 
@@ -313,7 +292,7 @@ namespace RaceTo21
                 {
                     if (player.score > highScore)
                     {
-                        highScore = player.score; // PLAYER'S OVERALL SCORE REMAINS THE SAME IF STAY
+                        highScore = player.score;
                     }
                 }
             }
@@ -326,8 +305,12 @@ namespace RaceTo21
         }
 
 
-        /* Function: DoOverallScoring) ****************
-         *****************************************/
+        /* Function: DoOverallScoring() **********
+        * Updates overallScores of each Player. Get the player that won in the game.
+        * Called by method DoNextTask() in Game.
+        * Adds/Subtracts round scores to overallScores of each player.
+        * Can returns a player (who is the overall winner of the whole game), else returns null.
+        ************************************/
         public Player DoOverallScoring()
         {
             foreach (var player in players)
@@ -370,7 +353,14 @@ namespace RaceTo21
 
         }
 
-        private void ResetRound(Player winner)
+        /* Function: ResetRound() **********
+         * This method preps for the next round: 
+         * Creates a fresh shuffled deck, resets each player and sets the new round name.
+         * Calls the ResetPlayer() method for each player
+         * Called by method DoNextTask() in Game.
+         * Writes to console. 
+        ************************************/
+        private void ResetRound()
         {   
 
             //players.Remove(winner);

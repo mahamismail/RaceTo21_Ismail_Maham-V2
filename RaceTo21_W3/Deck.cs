@@ -63,6 +63,7 @@ namespace RaceTo21
                 }
             }
 
+            //Uncomment to view the png names of each card
             /* View png names
             foreach (string key in imageIDs.Keys)
             {
@@ -72,6 +73,10 @@ namespace RaceTo21
             */
         }
 
+        /* Function: Shuffle() **********
+         * Shuffles the deck of cards.
+         * Called by the game instance at the beginning.
+        ************************************/
         public void Shuffle()
         {
             Console.WriteLine("Shuffling Cards...");
@@ -81,26 +86,19 @@ namespace RaceTo21
             // one-line method that uses Linq:
             // cards = cards.OrderBy(a => rng.Next()).ToList();
 
-            // multi-line method that uses Array notation on a list!
-            // (this should be easier to understand)
             for (int i=0; i<cards.Count; i++)
             {
                 Card tmp = cards[i];
                 int swapindex = rng.Next(cards.Count);
-                cards[i] = cards[swapindex];
-                cards[swapindex] = tmp;
+                cards[i] = cards[swapindex]; // makes a duplicate
+                cards[swapindex] = tmp; //doesn't change anything
 
-                //cards[i] = cards[swapindex]; // makes a duplicate
-                //cards[swapindex] = cards[i]; //doesn't change anything
             }
         }
 
-        /* Maybe we can make a variation on this that's more useful,
-         * but at the moment it's just really to confirm that our 
-         * shuffling method(s) worked! And normally we want our card 
-         * table to do all of the displaying, don't we?!
-         */
-
+        /* Function: ShowAllCards() **********
+         * Displays all Cards in the deck.
+        ************************************/
         public void ShowAllCards()
         {
             for (int i=0; i<cards.Count; i++)
@@ -116,6 +114,11 @@ namespace RaceTo21
             }
         }
 
+        /* Function: DealTopCard() **********
+         * Deals the top most card in the deck. (the last card in the deck list)
+         * Returns the last card in the list.
+         * Call by Game Object in tasks
+        ************************************/
         public Card DealTopCard()
         {
             Card card = cards[cards.Count - 1];

@@ -1,6 +1,6 @@
 ﻿using System;
 namespace RaceTo21
-{
+{   
     public class Card
     {
         public string id;
