@@ -7,12 +7,11 @@ namespace RaceTo21
     {
         int numberOfPlayers; // number of players in current game
         List<Player> players = new List<Player>(); // list of objects containing player data
-        List<Player> playersInRound = new List<Player>(); // list of objects containing player data = new List<Player>(); 
         CardTable cardTable; // object in charge of displaying game information
         Deck deck = new Deck(); // deck of cards
         int currentPlayer = 0; // current player on list
         public Task nextTask; // keeps track of game state
-        private bool cheating = false; // lets you cheat for testing purposes if true
+        private bool cheating = true; // lets you cheat for testing purposes if true
 
         public int rounds = 0; // the number of rounds played
 
@@ -24,9 +23,7 @@ namespace RaceTo21
             nextTask = Task.GetNumberOfPlayers;
         }
 
-        /* Adds a player to the current game
-         * Called by DoNextTask() method
-    
+
         /* Function: AddPlayer() **********
          * Adds new player and it's name to the list.
          * Called by DoNextTask() method in Game object
@@ -276,7 +273,7 @@ namespace RaceTo21
          * Called by method DoNextTask() in Game.
          * Returns a player (who is the winner of the round)
         ************************************/
-        public Player DoRoundScoring()
+        private Player DoRoundScoring()
         {
             int highScore = 0;
 
@@ -311,7 +308,7 @@ namespace RaceTo21
         * Adds/Subtracts round scores to overallScores of each player.
         * Can returns a player (who is the overall winner of the whole game), else returns null.
         ************************************/
-        public Player DoOverallScoring()
+        private Player DoOverallScoring()
         {
             foreach (var player in players)
             {

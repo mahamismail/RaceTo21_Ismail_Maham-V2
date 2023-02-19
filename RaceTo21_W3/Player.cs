@@ -5,10 +5,10 @@ namespace RaceTo21
 {
 	public class Player
 	{
-		public string name;
+		public string name { get; private set; } 
 		public List<Card> cards = new List<Card>();
 		public PlayerStatus status = PlayerStatus.active;
-		public int score; 
+		public int score;
 		public int overallScore;
 
 		public Player(string n)

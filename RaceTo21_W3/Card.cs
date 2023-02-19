@@ -6,7 +6,7 @@ namespace RaceTo21
         public string id;
         public string displayName;
 
-        public Card(string shortCardName, string longCardName)
+    public Card(string shortCardName, string longCardName)
         {
             id = shortCardName;
             displayName = longCardName;
