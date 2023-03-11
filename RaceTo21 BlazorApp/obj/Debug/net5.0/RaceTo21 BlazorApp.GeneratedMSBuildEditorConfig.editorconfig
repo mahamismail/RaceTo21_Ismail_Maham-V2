@@ -1,0 +1,13 @@
+is_global = true
+build_property.TargetFramework = net5.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = false
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = browser
+build_property.EnableSingleFileAnalyzer = 
+build_property.EnableTrimAnalyzer = true
+build_property.IncludeAllContentForSelfExtract = 
+build_property.RootNamespace = RaceTo21_BlazorApp
+build_property.ProjectDir = D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\

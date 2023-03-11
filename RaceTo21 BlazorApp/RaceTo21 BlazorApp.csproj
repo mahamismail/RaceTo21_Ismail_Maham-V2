@@ -1,0 +1,81 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\card_assets\card_back.png" />
+    <None Include="wwwroot\card_assets\card_clubs_02.png" />
+    <None Include="wwwroot\card_assets\card_clubs_03.png" />
+    <None Include="wwwroot\card_assets\card_clubs_04.png" />
+    <None Include="wwwroot\card_assets\card_clubs_05.png" />
+    <None Include="wwwroot\card_assets\card_clubs_06.png" />
+    <None Include="wwwroot\card_assets\card_clubs_07.png" />
+    <None Include="wwwroot\card_assets\card_clubs_08.png" />
+    <None Include="wwwroot\card_assets\card_clubs_09.png" />
+    <None Include="wwwroot\card_assets\card_clubs_10.png" />
+    <None Include="wwwroot\card_assets\card_clubs_A.png" />
+    <None Include="wwwroot\card_assets\card_clubs_J.png" />
+    <None Include="wwwroot\card_assets\card_clubs_K.png" />
+    <None Include="wwwroot\card_assets\card_clubs_Q.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_02.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_03.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_04.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_05.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_06.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_07.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_08.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_09.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_10.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_A.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_J.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_K.png" />
+    <None Include="wwwroot\card_assets\card_diamonds_Q.png" />
+    <None Include="wwwroot\card_assets\card_empty.png" />
+    <None Include="wwwroot\card_assets\card_hearts_02.png" />
+    <None Include="wwwroot\card_assets\card_hearts_03.png" />
+    <None Include="wwwroot\card_assets\card_hearts_04.png" />
+    <None Include="wwwroot\card_assets\card_hearts_05.png" />
+    <None Include="wwwroot\card_assets\card_hearts_06.png" />
+    <None Include="wwwroot\card_assets\card_hearts_07.png" />
+    <None Include="wwwroot\card_assets\card_hearts_08.png" />
+    <None Include="wwwroot\card_assets\card_hearts_09.png" />
+    <None Include="wwwroot\card_assets\card_hearts_10.png" />
+    <None Include="wwwroot\card_assets\card_hearts_A.png" />
+    <None Include="wwwroot\card_assets\card_hearts_J.png" />
+    <None Include="wwwroot\card_assets\card_hearts_K.png" />
+    <None Include="wwwroot\card_assets\card_hearts_Q.png" />
+    <None Include="wwwroot\card_assets\card_joker_black.png" />
+    <None Include="wwwroot\card_assets\card_joker_red.png" />
+    <None Include="wwwroot\card_assets\card_spades_02.png" />
+    <None Include="wwwroot\card_assets\card_spades_03.png" />
+    <None Include="wwwroot\card_assets\card_spades_04.png" />
+    <None Include="wwwroot\card_assets\card_spades_05.png" />
+    <None Include="wwwroot\card_assets\card_spades_06.png" />
+    <None Include="wwwroot\card_assets\card_spades_07.png" />
+    <None Include="wwwroot\card_assets\card_spades_08.png" />
+    <None Include="wwwroot\card_assets\card_spades_09.png" />
+    <None Include="wwwroot\card_assets\card_spades_10.png" />
+    <None Include="wwwroot\card_assets\card_spades_A.png" />
+    <None Include="wwwroot\card_assets\card_spades_J.png" />
+    <None Include="wwwroot\card_assets\card_spades_K.png" />
+    <None Include="wwwroot\card_assets\card_spades_Q.png" />
+    <None Include="wwwroot\card_assets\License.txt" />
+    <None Include="wwwroot\card_assets\SUITS.png" />
+    <None Include="wwwroot\card_assets\_cards.csv" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.17" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.17" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.17" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
