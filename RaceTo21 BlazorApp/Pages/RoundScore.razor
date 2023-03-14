@@ -1,4 +1,4 @@
-﻿@page "/NumberOfPlayers"
+﻿@page "/RoundScore"
 @using RaceTo21_BlazorApp
 
 @inject NavigationManager NavigationManager
@@ -85,58 +85,5 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-<div class="container">
-	<div class="container">
-		<h2 class="text-center">How many players?</h2>
-		<input type="number" class="form-control" id="numberInput" min="2" max="8" step="1" @bind="Game.numberOfPlayers">
-		
-		@if (Game.numberOfPlayers > 0)
-		{
-			<div class="row mt-6" style="padding: 5px">
-				@for (var i = 0; i < 4 && i < Game.numberOfPlayers; i++)
-				{
-					<div class="col-md-3">
-						<div class="form-group">
-							<label for="playerInput@(i)">Player @(i+1) </label>
-							<input type="text" class="form-control" id="playerInput@(i)" name="playerinput" value="@Game.tempNames[i]" @onchange="(e) => Game.tempNames[i] = e.Value.ToString()" style="width: 200px">
-						</div>
-					</div>
-				}
-			</div>
-
-			@if (Game.numberOfPlayers > 4)
-			{
-				<div class="row mt-6" style="padding: 5px">
-					@for (var i = 4; i < 8 && i < Game.numberOfPlayers; i++)
-					{
-						<div class="col-md-3">
-							<div class="form-group">
-								<label for="playerInput@(i)">Player @(i+1) </label>
-								<input type="text" class="form-control" id="playerInput@(i)" name="playerinput" value="@Game.tempNames[i]" @onchange="(e) => Game.tempNames[i] = e.Value.ToString()" style="width: 200px">
-							</div>
-						</div>
-					}
-				</div>
-			}
-		}
-
-		<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="GoToGamePage">PLAY</button>
-
-	</div>
-</div>
-
-
 @code {
-
-	private void GoToGamePage()
-	{
-
-		for (var i = 0; i < Game.numberOfPlayers; i++)
-		{
-			Game.AddPlayer(Game.tempNames[i]);
-			Console.WriteLine($"Player {Game.tempNames[i]} added!");
-		}
-
-		NavigationManager.NavigateTo("/OverallScore");
-	}
 }

@@ -1,17 +1,145 @@
-﻿@page "/gameplay"
+﻿@page "/Gameplay"
 @using RaceTo21_BlazorApp
 
-<h1>Counter</h1>
+<style>
 
-<p>Current count: @currentCount</p>
+	body {
+		font-family: 'Montserrat', sans-serif;
+	}
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+	.fixed-bottom {
+		padding: 10px 0;
+	}
+
+	.fixed-bottom {
+		justify-content: center;
+
+	}
+
+	.row {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+	}
+
+	.btn-purple {
+		background-color: purple;
+		color: #fff; /* text color */
+	}
+
+	.btn-rounded {
+		border-radius: 50px; /* make the button fully rounded */
+		padding: 10px 20px; /* adjust the padding to your preference */
+		font-size: 16px; /* adjust the font size to your preference */
+		font-weight: 500;
+		width: 200px;
+	}
+
+	#numberInput {
+		background-color: #D3D3D3; /* set the background color to grey */
+		width: 200px; /* set the width to your desired size */
+		margin: 20px;
+		font-size: 20px;
+		font-weight: bold;
+		text-align: center;
+	}
+
+	.form-group {
+		margin: 10px;
+		display: inline-block;
+	}
+
+	.form-control {
+		background-color: #D3D3D3; /* set the background color to grey */
+		width: 200px; /* set the width to your desired size */
+		font-size: 20px;
+		font-weight: bold;
+		text-align: center;
+		padding: 10px;
+	}
+
+	p {
+		width: 70%;
+		text-align: center;
+		padding-bottom: 20px;
+	}
+
+	.nav {
+		padding: 30px;
+		display: flex;
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.container {
+		padding: 80px 0 0 0;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		margin: 5px;
+	}
+
+	.greyNav {
+		background-color: #D3D3D3;
+	}
+
+	h1 {
+		padding: 10px 10px 10px 10px;
+		font-size: 45px;
+		font-weight: bold;
+		color: purple;
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	h2 {
+		padding: 10px 10px 10px 10px;
+		font-size: 25px;
+		font-weight: bold;
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	img {
+		width: 30%;
+	}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+<div class="fixed-bottom">
+	<div class="nav greyNav">
+		<row class="row">
+			<div class="col-md-3">
+				<label for="playerName" style="font-weight: bold; font-size: 20px">PlayerName</label>
+			</div>
+			<div class="col-md-6">
+				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 1 CARD</button>
+				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 2 CARDS</button>
+				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 3 CARDS</button>
+			</div>
+			<div class="col-md-1" style="text-align: center">
+				<label >OR</label>
+			</div>
+			<div class="col-md-2">
+				<button class="btn btn-purple btn-rounded" style="width: 200px">PASS</button>
+			</div>
+		</row>
+	</div>
+</div>
+
+<div class="col-4 playerSpace">
+
+</div>
+
+
+
 
 @code {
-	private int currentCount = 0;
 
-	private void IncrementCount()
-	{
-		currentCount++;
-	}
 }

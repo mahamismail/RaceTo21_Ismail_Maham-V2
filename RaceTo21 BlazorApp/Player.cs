@@ -5,8 +5,7 @@ namespace RaceTo21_BlazorApp
 {
 	public class Player
 	{
-		public static string name { get; private set; }
-		public static string playerID;
+		public string name { get; private set; } 
 		public List<Card> cards = new List<Card>();
 		public PlayerStatus status = PlayerStatus.active;
 		public int score;

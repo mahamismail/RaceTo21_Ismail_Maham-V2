@@ -96,8 +96,14 @@ using RaceTo21_BlazorApp;
 
 	private void GoToGamePage()
 	{
-		Game(c).CreatePlayers();
-		NavigationManager.NavigateTo("/NumberOfPlayers");
+
+		for (var i = 0; i < Game.numberOfPlayers; i++)
+		{
+			Game.AddPlayer(Game.tempNames[i]);
+			Console.WriteLine($"Player {Game.tempNames[i]} added!");
+		}
+
+		NavigationManager.NavigateTo("/OverallScore");
 	}
 
 #line default

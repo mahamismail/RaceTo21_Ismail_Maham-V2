@@ -5,13 +5,10 @@ namespace RaceTo21_BlazorApp
 {
     public class CardTable
     {
-        public CardTable()
-        {
-            Console.WriteLine("Setting Up Table...");
-        }
-
-
-
+        //public CardTable()
+        //{
+        //    Console.WriteLine("Setting Up Table...");
+        //}
 
         public int numOfCardsPicked; // public int used in HowManyCards() to determine how many cards player chooses to pick
         public int overallTarget = 50; // the final overall score needed by one player to win the whole game.
@@ -32,7 +29,6 @@ namespace RaceTo21_BlazorApp
         }
         *****************************************/
 
-
         /* Function: GetNumberOfPlayers() ****************
          * Reads the user input from player.
          * Called by Game object during player turn.
@@ -40,14 +36,14 @@ namespace RaceTo21_BlazorApp
          
         public int GetNumberOfPlayers()
         {
-            //Console.Write("How many players? ");
+            Console.Write("How many players? ");
             string response = Console.ReadLine();
             int numberOfPlayers;
             while (int.TryParse(response, out numberOfPlayers) == false
                 || numberOfPlayers < 2 || numberOfPlayers > 8)
             {
-                //Console.WriteLine("Invalid number of players.");
-                //Console.Write("How many players?");
+                Console.WriteLine("Invalid number of players.");
+                Console.Write("How many players?");
                 response = Console.ReadLine();
             }
             return numberOfPlayers;
@@ -60,30 +56,33 @@ namespace RaceTo21_BlazorApp
          * Game object provides player number
          * Returns console input as a string: response (name of the player).
          *****************************************/
-        public string GetPlayerName(int playerNum)
+        public static string GetPlayerName(int playerNum)
         {
-            var name = GetPlayerName(count);
-            AddPlayer(name); // NOTE: player list will start from 0 index even though we use 1 for our count here to make the player numbering more human-friendly
-
-            List<Player> playersInRound = players;
-        }
-
-
-
-            /* Function: HowManyCards() **********
-             * Reads the user input of how many cards they will pick. 
-             * Can be a maximum of 3 cards. (0,1,2,3) - 0 being STAY
-             * Uses player as parameter.
-             * Uses cardTable's public int numOfCardsPicked
-             * Called in the Game object during Player Turn
-             * Returns console input as an int: numOfCardsPicked
-             ************************************/
-            public int HowManyCards(Player player)
-        {
-            //Console.WriteLine();
-            //Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
             string response = Console.ReadLine();
-            //Console.WriteLine();
+            while (response.Length < 1)
+            {
+                Console.WriteLine("Invalid name.");
+                Console.Write("What is the name of player# " + playerNum + "? ");
+                response = Console.ReadLine();
+            }
+            return response;
+        }
+        
+
+        /* Function: HowManyCards() **********
+         * Reads the user input of how many cards they will pick. 
+         * Can be a maximum of 3 cards. (0,1,2,3) - 0 being STAY
+         * Uses player as parameter.
+         * Uses cardTable's public int numOfCardsPicked
+         * Called in the Game object during Player Turn
+         * Returns console input as an int: numOfCardsPicked
+         ************************************/
+        public int HowManyCards(Player player)
+        {
+            Console.WriteLine();
+            Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
+            string response = Console.ReadLine();
+            Console.WriteLine();
 
             if (response.ToUpper().StartsWith("3")) // Pick 3
             {
@@ -103,9 +102,9 @@ namespace RaceTo21_BlazorApp
             }
             else // if output other than 0, 1, 2, 3 put in then tell them to get it write.
             {
-                //Console.WriteLine("Invalid number of cards. Choose 0, 1, 2, or 3!");
-                //Console.WriteLine();
-                //Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
+                Console.WriteLine("Invalid number of cards. Choose 0, 1, 2, or 3!");
+                Console.WriteLine();
+                Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
                 response = Console.ReadLine();
             }
             return numOfCardsPicked; // returns 0, 1, 2 or 3 only
@@ -121,28 +120,28 @@ namespace RaceTo21_BlazorApp
         {
             if (player.cards.Count > 0)
             {
-                //Console.Write(player.name + " has: ");
+                Console.Write(player.name + " has: ");
                 foreach (Card card in player.cards)
                 {
                     if (player.cards.Count == 1) // if there is only one card 
                     {
-                        //Console.Write(card.displayName);
+                        Console.Write(card.displayName);
                     }
                     else if (player.cards.IndexOf(card) == player.cards.Count - 1) // if the card is the last card
                     {
-                        //Console.Write(card.displayName + ". ");
+                        Console.Write(card.displayName + ". ");
                     }
                     else
                     {
-                        //Console.Write(card.displayName + ", ");
+                        Console.Write(card.displayName + ", ");
                     }
                 }
-                //Console.Write("= " + player.score + "/21 ");
+                Console.Write("= " + player.score + "/21 ");
                 if (player.status != PlayerStatus.active)
                 {
-                    //Console.Write("(" + player.status.ToString().ToUpper() + ")");
+                    Console.Write("(" + player.status.ToString().ToUpper() + ")");
                 }
-                //Console.WriteLine();
+                Console.WriteLine();
             }
         }
 
@@ -169,15 +168,15 @@ namespace RaceTo21_BlazorApp
         {
             if (player != null)
             {
-                //Console.WriteLine();
-                //Console.WriteLine($">>>>>>>>>>>>>> {player.name} wins this round! <<<<<<<<<<<<<<<<");
-                //Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine($">>>>>>>>>>>>>> {player.name} wins this round! <<<<<<<<<<<<<<<<");
+                Console.WriteLine();
             }
             else // if there is no player aka player is null
             {
-                //Console.WriteLine();
-                //Console.WriteLine(">>>>>>>>>>>>> Everyone busted! <<<<<<<<<<<<<<<<<<<");
-                //Console.WriteLine();
+                Console.WriteLine();
+                Console.WriteLine(">>>>>>>>>>>>> Everyone busted! <<<<<<<<<<<<<<<<<<<");
+                Console.WriteLine();
             }
         }
 
@@ -190,11 +189,11 @@ namespace RaceTo21_BlazorApp
         {
             //(while (player != null)
             //{*
-            //Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //Console.WriteLine($"~~{player.name} wins the game!~~");
-            //Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-            //Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine($"~~{player.name} wins the game!~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
             Console.Write("Press <Enter> to exit... "); // GAME END.
             while (Console.ReadKey().Key != ConsoleKey.Enter) { };
@@ -209,16 +208,16 @@ namespace RaceTo21_BlazorApp
         ************************************/
         public void ShowScoreboard(List<Player> players)
         {
-            //Console.WriteLine("================================");
-            //Console.WriteLine("~~~~~~~~~~ Score Board ~~~~~~~~~");
-            //Console.WriteLine();
-            //Console.WriteLine($"First player to accumulate {overallTarget} wins!");
-            //Console.WriteLine();
+            Console.WriteLine("================================");
+            Console.WriteLine("~~~~~~~~~~ Score Board ~~~~~~~~~");
+            Console.WriteLine();
+            Console.WriteLine($"First player to accumulate {overallTarget} wins!");
+            Console.WriteLine();
             foreach (Player player in players)
             {
                 Console.WriteLine($"{player.name}'s overall score is {player.overallScore}/{overallTarget}");
             }
-            //Console.WriteLine("================================");
+            Console.WriteLine("================================");
         }
 
         /* Function: PlayAnotherRound() **********
@@ -230,7 +229,7 @@ namespace RaceTo21_BlazorApp
         {
             while (true)
             {
-                //Console.Write("Would you like to continue? (Y/N)");
+                Console.Write("Would you like to continue? (Y/N)");
                 string response = Console.ReadLine();
                 if (response.ToUpper().StartsWith("Y"))
                 {
@@ -242,7 +241,7 @@ namespace RaceTo21_BlazorApp
                 }
                 else
                 {
-                    //Console.WriteLine("Please answer Y(es) or N(o)!");
+                    Console.WriteLine("Please answer Y(es) or N(o)!");
                 }
             }
         }

@@ -5,54 +5,50 @@ namespace RaceTo21_BlazorApp
 {
     public class Game
     {
-        static public int numberOfPlayers = 2; // number of players in current game
-        List<Player> players = new List<Player>(); // list of objects containing player data
+        public static int numberOfPlayers = 2; // number of players in current game
         static public string[] tempNames = new string[8];
-        CardTable cardTable; // object in charge of displaying game information
-        Deck deck = new Deck(); // deck of cards
-        int currentPlayer = 0; // current player on list
-        public Task nextTask; // keeps track of game state
-        private bool cheating = true; // lets you cheat for testing purposes if true
+        public static List<Player> players = new List<Player>(); // list of objects containing player data
+        public static CardTable cardTable; // object in charge of displaying game information
+        public static Deck deck = new Deck(); // deck of cards
+        public static int currentPlayer = 0; // current player on list
+
 
         public int rounds = 0; // the number of rounds played
 
-        public Game(CardTable c)
+        //public Game(CardTable c)
+        //{
+        //    cardTable = c;
+        //    deck.Shuffle();
+        //}
+
+
+        /* Function: AddPlayer() **********
+         * Adds new player and it's name to the list.
+         * Called by DoNextTask() method in Game object
+        ************************************/
+        public static void AddPlayer(string n)
         {
-            cardTable = c;
-            deck.Shuffle();
-            //deck.ShowAllCards();
-            nextTask = Task.GetNumberOfPlayers;
+            players.Add(new Player(n));
+
         }
 
-        public void CreatePlayers()
-        {
-            players.Clear();
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
-                if (!string.IsNullOrEmpty(tempNames[i]))
-                {
-                    players.Add(new Player(tempNames[i]));
-                }
-            }
-        }
-    
         /* Function: DoNextTask() **********
          * Figures out what task to do next in game
          * as represented by field nextTask
          * Calls methods required to complete task
          * then sets nextTask.
-        ************************************/
+        
         public void DoNextTask()
         {
             if (nextTask == Task.GetNumberOfPlayers) // gets number of player
             {
-                //Console.WriteLine("================================");
+                Console.WriteLine("================================");
                 numberOfPlayers = cardTable.GetNumberOfPlayers();
                 nextTask = Task.GetNames;
             }
             else if (nextTask == Task.GetNames) // get the name of player
             {
-                //Console.WriteLine("================================");
+                Console.WriteLine("================================");
                 for (var count = 1; count <= numberOfPlayers; count++)
                 {
                     var name = cardTable.GetPlayerName(count);
@@ -64,7 +60,120 @@ namespace RaceTo21_BlazorApp
             }
             else if (nextTask == Task.IntroducePlayers) // player is introduced in console
             {
-                //Console.WriteLine("================================");
+                Console.WriteLine("================================");
+                cardTable.ShowPlayers(players);
+                cardTable.ShowScoreboard(players);
+                Console.Write($"Starting Round # {rounds + 1}");
+                nextTask = Task.PlayerTurn;
+            }
+            else if (nextTask == Task.PlayerTurn)
+            {
+                cardTable.ShowHands(players); // players hands are shown in console
+                Player player = players[currentPlayer];
+                if (player.status == PlayerStatus.active)
+                {
+                    if (cardTable.HowManyCards(player) == 0) // if player picks 0 cards their status changes to STAY.
+                    {
+                        player.status = PlayerStatus.stay;
+                    }
+                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) // If player picks less than or equal to 3 cards, enter this.
+                    {
+                        int numOfCards = cardTable.numOfCardsPicked;
+                        for (int i = 0; i < numOfCards; i++) // this loops according to the number of cards needed. If 3, deals out and adds 3 cards.
+                        {
+                            Card card = deck.DealTopCard();
+                            player.cards.Add(card);
+                        }
+                        player.score = ScoreHand(player); // immediately checks if score made player go bust or win.
+
+                        if (player.score > 21)
+                        {
+                            player.status = PlayerStatus.bust;
+                        }
+                        else if (player.score == 21)
+                        {
+                            player.status = PlayerStatus.win;
+                        }
+                    }
+                }
+                cardTable.ShowHand(player); // show hand to players.
+                nextTask = Task.CheckForEnd;
+            }
+            else if (nextTask == Task.CheckForEnd) // check if the Round is ending
+            {
+                if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
+                {
+                    rounds++;
+                    Console.WriteLine("================================");
+                    Player winner = DoRoundScoring(); // adds scores of players within the Round.
+                    cardTable.AnnounceWinner(winner); // announce the winner of the round
+
+                    Player overallWinner = DoOverallScoring(); // adds to the overall scoring and updates scoreboard.
+                    cardTable.ShowScoreboard(players); // displays scoreboard
+
+                    if (overallWinner != null) // if there is a winner
+                    {
+                        cardTable.AnnounceOverallWinner(overallWinner); // announce winner
+                        nextTask = Task.GameOver; // GAME ENDS
+                    }
+                    else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
+                    {
+                        nextTask = Task.GameOver; // GAME ENDS
+                    }
+                    else // if continuing to the next round then:
+                    {
+                        ResetRound(); // Reset the players.
+                        nextTask = Task.PlayerTurn; // Move on to the next turn in the next round
+                    }
+                }
+                else
+                {
+                    currentPlayer++;
+                    if (currentPlayer > players.Count - 1)
+                    {
+                        currentPlayer = 0; // back to the first player...
+                    }
+                    nextTask = Task.PlayerTurn;
+                }
+            }
+            else // we shouldn't get here...
+            {
+                Console.WriteLine("I'm sorry, I don't know what to do now!");
+                nextTask = Task.GameOver;
+            }
+        }
+        ******************************************/
+
+
+        /* Function: DoNextTask() **********
+         * Figures out what task to do next in game
+         * as represented by field nextTask
+         * Calls methods required to complete task
+         * then sets nextTask.
+        
+        public void DoNextTask()
+        {
+            if (nextTask == Task.GetNumberOfPlayers) // gets number of player
+            {
+                Console.WriteLine("================================");
+                numberOfPlayers = cardTable.GetNumberOfPlayers();
+                nextTask = Task.GetNames;
+            }
+            else if (nextTask == Task.GetNames) // get the name of player
+            {
+                Console.WriteLine("================================");
+                for (var count = 1; count <= numberOfPlayers; count++)
+                {
+                    var name = cardTable.GetPlayerName(count);
+                    AddPlayer(name); // NOTE: player list will start from 0 index even though we use 1 for our count here to make the player numbering more human-friendly
+                    
+                    List<Player> playersInRound = players;
+                }
+                nextTask = Task.IntroducePlayers;
+            }
+            else if (nextTask == Task.IntroducePlayers) // player is introduced in console
+            {
+                Console.WriteLine("================================");
                 cardTable.ShowPlayers(players);
                 cardTable.ShowScoreboard(players);
                 Console.Write($"Starting Round # {rounds + 1}");
@@ -83,7 +192,7 @@ namespace RaceTo21_BlazorApp
                     cards at once; they don’t get to decide after each card
 
                     Meethod created HowManyCards()
-                    ************************************************************************/
+                    
                     if (cardTable.HowManyCards(player) == 0) // if player picks 0 cards their status changes to STAY.
                     {
                         player.status = PlayerStatus.stay;
@@ -124,7 +233,7 @@ namespace RaceTo21_BlazorApp
                 Methods added: ResetRound(), ResetPlayer(), AnnounceOverallWinner(), 
                 DoOverallScoring(), PlayAnotherRound, ShowScoreboard()
 
-                ************************************************************************/
+                
 
                 if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
                 {
@@ -167,7 +276,7 @@ namespace RaceTo21_BlazorApp
                 nextTask = Task.GameOver;
             }
         }
-
+        ************************************************************************/
 
         /* Function: ScoreHand() **********
          * Figures out what task to do next in game
@@ -179,13 +288,13 @@ namespace RaceTo21_BlazorApp
         {
             int score = 0;
 
-            if (cheating == true && player.status == PlayerStatus.active)
+            if (player.status == PlayerStatus.active)
             {
                 string response = null;
                 while (int.TryParse(response, out score) == false)
                 {
                     Console.Write("OK, what should player " + player.name + "'s score be?");
-                    response = Console.ReadLine();
+                    //response = Console.ReadLine();
                 }
                 return score;
             }
