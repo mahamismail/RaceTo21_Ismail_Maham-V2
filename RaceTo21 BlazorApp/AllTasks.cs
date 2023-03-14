@@ -1,7 +1,7 @@
 ﻿using System;
-namespace RaceTo21
+namespace RaceTo21_BlazorApp
 {
-    public enum Task
+    public enum AllTasks
     {
         GetNumberOfPlayers,
         GetNames,

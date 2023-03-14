@@ -1,5 +1,5 @@
 ﻿using System;
-namespace RaceTo21
+namespace RaceTo21_BlazorApp
 {
 	public enum PlayerStatus
 	{

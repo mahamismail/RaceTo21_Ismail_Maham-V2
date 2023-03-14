@@ -1,26 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceTo21
+namespace RaceTo21_BlazorApp
 {
     public class Game
     {
-        int numberOfPlayers; // number of players in current game
-        List<Player> players = new List<Player>(); // list of objects containing player data
-        CardTable cardTable; // object in charge of displaying game information
-        Deck deck = new Deck(); // deck of cards
-        int currentPlayer = 0; // current player on list
-        public Task nextTask; // keeps track of game state
-        private bool cheating = true; // lets you cheat for testing purposes if true
+        public static int numberOfPlayers; // number of players in current game
+        public static List<Player> players = new List<Player>(); // list of objects containing player data
+        static public string[] tempNames = new string[8];
+        public static CardTable cardTable; // object in charge of displaying game information
+        public static Deck deck = new Deck(); // deck of cards
+        public static int currentPlayer = 0; // current player on list
+        public static AllTasks nextTask; // keeps track of game state
+        public static bool cheating = true; // lets you cheat for testing purposes if true
 
-        public int rounds = 0; // the number of rounds played
+        public static int rounds = 0; // the number of rounds played
 
         public Game(CardTable c)
         {
             cardTable = c;
             deck.Shuffle();
             //deck.ShowAllCards();
-            nextTask = Task.GetNumberOfPlayers;
+            nextTask = AllTasks.GetNumberOfPlayers;
         }
 
 
@@ -28,7 +29,7 @@ namespace RaceTo21
          * Adds new player and it's name to the list.
          * Called by DoNextTask() method in Game object
         ************************************/
-        public void AddPlayer(string n)
+        public static void AddPlayer(string n)
         {
             players.Add(new Player(n));
 
@@ -40,15 +41,15 @@ namespace RaceTo21
          * Calls methods required to complete task
          * then sets nextTask.
         ************************************/
-        public void DoNextTask()
+        public static void DoNextTask()
         {
-            if (nextTask == Task.GetNumberOfPlayers) // gets number of player
+            if (nextTask == AllTasks.GetNumberOfPlayers) // gets number of player
             {
                 Console.WriteLine("================================");
                 numberOfPlayers = cardTable.GetNumberOfPlayers();
-                nextTask = Task.GetNames;
+                nextTask = AllTasks.GetNames;
             }
-            else if (nextTask == Task.GetNames) // get the name of player
+            else if (nextTask == AllTasks.GetNames) // get the name of player
             {
                 Console.WriteLine("================================");
                 for (var count = 1; count <= numberOfPlayers; count++)
@@ -58,17 +59,17 @@ namespace RaceTo21
                     
                     List<Player> playersInRound = players;
                 }
-                nextTask = Task.IntroducePlayers;
+                nextTask = AllTasks.IntroducePlayers;
             }
-            else if (nextTask == Task.IntroducePlayers) // player is introduced in console
+            else if (nextTask == AllTasks.IntroducePlayers) // player is introduced in console
             {
                 Console.WriteLine("================================");
                 cardTable.ShowPlayers(players);
                 cardTable.ShowScoreboard(players);
                 Console.Write($"Starting Round # {rounds + 1}");
-                nextTask = Task.PlayerTurn;
+                nextTask = AllTasks.PlayerTurn;
             }
-            else if (nextTask == Task.PlayerTurn)
+            else if (nextTask == AllTasks.PlayerTurn)
             {
                 Console.WriteLine();
                 Console.WriteLine("================================");
@@ -107,9 +108,9 @@ namespace RaceTo21
                     }
                 }
                 cardTable.ShowHand(player); // show hand to players.
-                nextTask = Task.CheckForEnd;
+                nextTask = AllTasks.CheckForEnd;
             }
-            else if (nextTask == Task.CheckForEnd) // check if the Round is ending
+            else if (nextTask == AllTasks.CheckForEnd) // check if the Round is ending
             {
                 /*********************** Level 2 Feature *******************************
         
@@ -137,16 +138,16 @@ namespace RaceTo21
                     if (overallWinner != null) // if there is a winner
                     {
                         cardTable.AnnounceOverallWinner(overallWinner); // announce winner
-                        nextTask = Task.GameOver; // GAME ENDS
+                        nextTask = AllTasks.GameOver; // GAME ENDS
                     }
                     else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
                     {
-                        nextTask = Task.GameOver; // GAME ENDS
+                        nextTask = AllTasks.GameOver; // GAME ENDS
                     }
                     else // if continuing to the next round then:
                     {
                         ResetRound(); // Reset the players.
-                        nextTask = Task.PlayerTurn; // Move on to the next turn in the next round
+                        nextTask = AllTasks.PlayerTurn; // Move on to the next turn in the next round
                     }
                 }
                 else
@@ -156,13 +157,13 @@ namespace RaceTo21
                     {
                         currentPlayer = 0; // back to the first player...
                     }
-                    nextTask = Task.PlayerTurn;
+                    nextTask = AllTasks.PlayerTurn;
                 }
             }
             else // we shouldn't get here...
             {
                 Console.WriteLine("I'm sorry, I don't know what to do now!");
-                nextTask = Task.GameOver;
+                nextTask = AllTasks.GameOver;
             }
         }
 
@@ -173,7 +174,7 @@ namespace RaceTo21
          * Calls methods required to complete task
          * then sets nextTask.
         ************************************/
-        public int ScoreHand(Player player)
+        public static int ScoreHand(Player player)
         {
             int score = 0;
 
@@ -217,7 +218,7 @@ namespace RaceTo21
          * Returns true if at least one player is active
          * Called in Game Tasks.
         ************************************/
-        public bool CheckActivePlayers()
+        public static bool CheckActivePlayers()
         {
             foreach (var player in players)
             {
@@ -234,7 +235,7 @@ namespace RaceTo21
          * Returns true if a player has won
          * Called by DoNextTask() method
         ************************************/
-        public bool CheckForRoundWin()
+        public static bool CheckForRoundWin()
         {
             /* if playerstatus is win then return true
              * if playerstatus is stay or active, false, unless counter is one less the number of players (counter = numOfPlayers -1) 
@@ -273,7 +274,7 @@ namespace RaceTo21
          * Called by method DoNextTask() in Game.
          * Returns a player (who is the winner of the round)
         ************************************/
-        private Player DoRoundScoring()
+        public static Player DoRoundScoring()
         {
             int highScore = 0;
 
@@ -308,7 +309,7 @@ namespace RaceTo21
         * Adds/Subtracts round scores to overallScores of each player.
         * Can returns a player (who is the overall winner of the whole game), else returns null.
         ************************************/
-        private Player DoOverallScoring()
+        public static Player DoOverallScoring()
         {
             foreach (var player in players)
             {
@@ -357,7 +358,7 @@ namespace RaceTo21
          * Called by method DoNextTask() in Game.
          * Writes to console. 
         ************************************/
-        private void ResetRound()
+        public static void ResetRound()
         {   
 
             //players.Remove(winner);
