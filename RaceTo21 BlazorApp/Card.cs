@@ -1,5 +1,5 @@
 ﻿using System;
-namespace RaceTo21_BlazorApp
+namespace RaceTo21
 {   
     public class Card
     {

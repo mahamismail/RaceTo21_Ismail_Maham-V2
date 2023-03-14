@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq; // currently only needed if we use alternate shuffle method
 
-namespace RaceTo21_BlazorApp
+namespace RaceTo21
 {
     public class Deck
     {

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceTo21_BlazorApp
+namespace RaceTo21
 {
     public class CardTable
     {
-        //public CardTable()
-        //{
-        //    Console.WriteLine("Setting Up Table...");
-        //}
+        public CardTable()
+        {
+            Console.WriteLine("Setting Up Table...");
+        }
 
         public int numOfCardsPicked; // public int used in HowManyCards() to determine how many cards player chooses to pick
         public int overallTarget = 50; // the final overall score needed by one player to win the whole game.
@@ -19,7 +19,7 @@ namespace RaceTo21_BlazorApp
          * Called by Game object during player turns.
          * Game object provides list of players
          * Calls Introduce method on each player object.
-         
+         *****************************************/
         public void ShowPlayers(List<Player> players)
         {
             for (int i = 0; i < players.Count; i++)
@@ -27,13 +27,12 @@ namespace RaceTo21_BlazorApp
                 players[i].Introduce(i+1); // List is 0-indexed but user-friendly player positions would start with 1...
             }
         }
-        *****************************************/
 
         /* Function: GetNumberOfPlayers() ****************
          * Reads the user input from player.
          * Called by Game object during player turn.
          * Returns console input as an int: numberOfPlayers
-         
+         *****************************************/
         public int GetNumberOfPlayers()
         {
             Console.Write("How many players? ");
@@ -48,7 +47,6 @@ namespace RaceTo21_BlazorApp
             }
             return numberOfPlayers;
         }
-        *****************************************/
 
         /* Function: GetPlayerName() ****************
          * Reads the user input for name.
@@ -56,8 +54,9 @@ namespace RaceTo21_BlazorApp
          * Game object provides player number
          * Returns console input as a string: response (name of the player).
          *****************************************/
-        public static string GetPlayerName(int playerNum)
+        public string GetPlayerName(int playerNum)
         {
+            Console.Write("What is the name of player# " + playerNum + "? ");
             string response = Console.ReadLine();
             while (response.Length < 1)
             {
@@ -67,7 +66,7 @@ namespace RaceTo21_BlazorApp
             }
             return response;
         }
-        
+
 
         /* Function: HowManyCards() **********
          * Reads the user input of how many cards they will pick. 

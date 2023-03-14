@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceTo21_BlazorApp
+namespace RaceTo21
 {
 	public class Player
 	{
