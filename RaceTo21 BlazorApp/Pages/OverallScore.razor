@@ -21,6 +21,10 @@
 		font-weight: 500;
 	}
 
+	.btn-white {
+		color: purple;
+	}
+
 	#numberInput {
 		background-color: #D3D3D3; /* set the background color to grey */
 		width: 200px; /* set the width to your desired size */
@@ -30,7 +34,13 @@
 		text-align: center;
 	}
 
+	.row {
+		justify-content: center
+	}
+
 	.form-group {
+		height: 100%;
+		width: 100%;
 		margin: 10px;
 		display: inline-block;
 	}
@@ -56,7 +66,6 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
-		margin: 5px;
 	}
 
 	h1 {
@@ -85,19 +94,50 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-@foreach (Player player in Game.players)
-{
-		<div class="row mt-6" style="padding: 5px">
+<div class="container">
+	<div class="container">
 
-				<div class="col-md-3">
-					<div class="form-group">
-						<label for="@player.name">@player.name </label>
-						<input type="text" class="form-control" id = "@player.name" readonly value ="@player.overallScore" style="width: 200px">
-					</div>
+		@switch (Game.nextTask)
+		{
+			case AllTasks.IntroducePlayers:
+
+				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="ReturnToPlayers">
+					← Back
+				</button>
+				<h2 class="text-center mt-4">Overall Scores</h2>
+
+				<div class="row mt-12" style="padding: 5px">
+					@foreach (Player player in Game.players)
+					{
+
+						<div class="col md-2">
+							<div class="form-group">
+								<label for="@player.name">@player.name </label>
+								<input type="text" class="form-control" id="@player.name" readonly value="@player.overallScore" style="width: 200px">
+							</div>
+						</div>
+
+					}
 				</div>
+				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="GoToGamePage">BEGIN ROUND 1</button>
+				break;
+		}
 
-		</div>
-}
+	</div>
+</div>
+
 
 @code {
+
+	private void ReturnToPlayers()
+	{
+
+		NavigationManager.NavigateTo("/NumberOfPlayers");
+	}
+
+	private void GoToGamePage()
+	{
+
+		NavigationManager.NavigateTo("/Gameplay");
+	}
 }

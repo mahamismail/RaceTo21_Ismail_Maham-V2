@@ -5,7 +5,7 @@ namespace RaceTo21_BlazorApp
 {
     public class Game
     {
-        public static int numberOfPlayers; // number of players in current game
+        public static int numberOfPlayers = 2; // number of players in current game
         public static List<Player> players = new List<Player>(); // list of objects containing player data
         static public string[] tempNames = new string[8];
         public static CardTable cardTable; // object in charge of displaying game information
@@ -16,9 +16,9 @@ namespace RaceTo21_BlazorApp
 
         public static int rounds = 0; // the number of rounds played
 
-        public Game(CardTable c)
+        public Game(/*CardTable c*/)
         {
-            cardTable = c;
+            //cardTable = c;
             deck.Shuffle();
             //deck.ShowAllCards();
             nextTask = AllTasks.GetNumberOfPlayers;

@@ -95,7 +95,7 @@ using RaceTo21_BlazorApp;
        
 
 	//public static CardTable cardTable = new CardTable();
-	//public static Game game = new Game(cardTable);
+	public static Game game = new Game();
 
 	private void GoToPlayerPage()
 	{

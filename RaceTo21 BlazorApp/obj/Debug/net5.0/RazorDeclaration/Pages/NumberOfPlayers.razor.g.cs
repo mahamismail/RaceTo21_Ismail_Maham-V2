@@ -91,10 +91,10 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 129 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\NumberOfPlayers.razor"
+#line 158 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\NumberOfPlayers.razor"
        
 
-	private void GoToGamePage()
+	private void GoToScorePage()
 	{
 
 		for (var i = 0; i < Game.numberOfPlayers; i++)
@@ -104,6 +104,12 @@ using RaceTo21_BlazorApp;
 		}
 
 		NavigationManager.NavigateTo("/OverallScore");
+	}
+
+	private void ReturnToMain()
+	{
+
+		NavigationManager.NavigateTo("/");
 	}
 
 #line default

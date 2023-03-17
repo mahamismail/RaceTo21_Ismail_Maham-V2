@@ -242,13 +242,13 @@
       "mscorlib.dll": "sha256-RvlJgNNOrNqPypkseRqbe69kNd7hnKW0u6Bmt1305d4=",
       "netstandard.dll": "sha256-Ttq9E+RchoLMvC6pS8ktXuaz1r51vG7wSm1emPBPRrk=",
       "System.Private.CoreLib.dll": "sha256-7y7hjQvy9SAXBmGIcqlrFwPQioCDSax5WwjUDJYfRAk=",
-      "RaceTo21 BlazorApp.dll": "sha256-yHqd1v\/nv\/GPZFOeBIN8ThQ2v0psOXe9a71pNaPEFOs="
+      "RaceTo21 BlazorApp.dll": "sha256-Wvd3WbvRPaDBAHth82n9ja7Pr4efDq\/F3BrdBINdVOU="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "RaceTo21 BlazorApp.pdb": "sha256-F\/FgloxKUlfoW45S85eujS+3bh6bObIJtz\/ncV7mphE="
+      "RaceTo21 BlazorApp.pdb": "sha256-4zmItv2JwD0vDUu5a1xN2jEmCiASudpPoZ5jRljJ4w0="
     },
     "runtime": {
       "dotnet.timezones.blat": "sha256-jWuZI+z9wt0OfCMj+W5wh3HN+Ye6efC6YfCUWbBHBa8=",
