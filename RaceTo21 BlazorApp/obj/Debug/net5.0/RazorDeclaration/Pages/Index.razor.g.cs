@@ -100,6 +100,7 @@ using RaceTo21_BlazorApp;
 	{
 		Game game = new Game(cardTable);
 		Game.tempNames = new string[8];
+		Game.players = new List<Player>();
 	}
 
 	private void GoToPlayerPage()

@@ -90,6 +90,60 @@ using RaceTo21_BlazorApp;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 197 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+       
+
+	bool buttonDisabled = false;
+
+	private void GoToOverallScore()
+	{
+		NavigationManager.NavigateTo("/OverallScore");
+	}
+
+	private void DisableButtons()
+	{
+		buttonDisabled = true;
+	}
+
+	private string ContainerColor(Player player)
+	{
+		if (player.isWinner == true)
+		{
+			return "green-solid";
+		}
+		else if (player.isCurrentPlayer == true)
+		{
+			return "purple-solid";
+		}
+		else if (player.status == PlayerStatus.bust)
+		{
+			return "grey-solid";
+		}
+		return "purple-outline";
+	}
+
+	private string PlayerStatusToString(Player player)
+	{
+		if (player.status == PlayerStatus.bust)
+		{
+			return "Busted";
+		}
+		else if (player.status == PlayerStatus.win)
+		{
+			return "Winner!";
+		}
+		else if (player.status == PlayerStatus.stay)
+		{
+			return "Stayed";
+		}
+		return "";
+	}
+
+#line default
+#line hidden
+#nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }
 #pragma warning restore 1591

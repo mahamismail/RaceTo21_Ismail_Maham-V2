@@ -1,14 +1,12 @@
 ﻿@page "/Gameplay"
 @using RaceTo21_BlazorApp
 
+@inject NavigationManager NavigationManager
+
 <style>
 
 	body {
 		font-family: 'Montserrat', sans-serif;
-	}
-
-	.fixed-bottom {
-		padding: 10px 0;
 	}
 
 	.fixed-bottom {
@@ -72,7 +70,7 @@
 	}
 
 	.container {
-		padding: 80px 0 0 0;
+		padding: 0 0 80px 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -81,28 +79,47 @@
 	}
 
 	.greyNav {
-		background-color: #D3D3D3;
-	}
-
-	h1 {
-		padding: 10px 10px 10px 10px;
-		font-size: 45px;
-		font-weight: bold;
-		color: purple;
-		text-align: center;
-		margin-top: 10px;
+		background-color: #CBC3E3;
 	}
 
 	h2 {
 		padding: 10px 10px 10px 10px;
-		font-size: 25px;
+		font-size: 30px;
 		font-weight: bold;
 		text-align: center;
 		margin-top: 10px;
 	}
 
-	img {
-		width: 30%;
+	.card-container {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+	}
+
+	.card-image {
+		max-width: 120%;
+		margin-right: 2px;
+	}
+
+	.purple-outline {
+		border-style: solid;
+		border-color: purple;
+	}
+
+	.purple-solid {
+		background-color: purple;
+	}
+
+	.green-solid {
+		background-color: #50C878;
+	}
+
+	.grey-solid {
+		background-color: #D3D3D3;
+	}
+
+	.white-text {
+		color: white;
 	}
 </style>
 
@@ -117,6 +134,40 @@
 	{
 		case AllTasks.PlayerTurn:
 
+			<h2 class="mt-4">Round @(Game.rounds+1)</h2>
+			<div class="container">
+				@foreach (Player player in Game.players)
+				{
+					@if (player.isWinner == true)
+					{
+						DisableButtons();
+						<div class="col" style="display: flex; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 10px;">
+							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ @player.name wins! ~ 🎊</h4>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); }">View Scores</button>
+						</div>
+					}
+				}
+
+				@foreach (Player player in Game.players)
+				{
+					<div class="row mt-12" style="padding: 5px; width: 100%; flex-direction: row; flex-wrap:nowrap ">
+						<div class="@ContainerColor(player)" style="margin-right:10px; width: 1250px; height: 150px; padding: 10px;">
+							<label class="@(player.isCurrentPlayer || player.isWinner ? "white-text" : " ")" style="font-weight: bold; font-size: 20px">@player.name</label>
+							<div class="row mt-12 card-container" style="padding: 5px">
+								@foreach (Card card in player.cards)
+								{
+									<img class="card-image" src="card_assets/@Deck.imageIDs[$"{card.id}"]" alt="@card.id" />
+								}
+							</div>
+						</div>
+
+						<h3 style="margin-right: 10px; display: inline-block; border: 2px solid purple; padding: 10px; border-radius: 100px ">@player.score</h3>
+						<h4 style="margin-right:10px; font-weight: 400">@PlayerStatusToString(player)</h4>
+
+					</div>
+				}
+			</div>
+
 			<div class="fixed-bottom">
 				<div class="nav greyNav">
 					<row class="row">
@@ -124,54 +175,70 @@
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
 						<div class="col-md-6">
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); }">PICK 1 CARD</button>
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); }">PICK 2 CARDS</button>
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); }">PICK 3 CARDS</button>
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); }" disabled="@buttonDisabled">PICK 1 CARD</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); }" disabled="@buttonDisabled">PICK 2 CARDS</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); }" disabled="@buttonDisabled">PICK 3 CARDS</button>
 						</div>
 						<div class="col-md-1" style="text-align: center">
 							<label>OR</label>
 						</div>
 						<div class="col-md-2">
-							<button class="btn btn-purple btn-rounded" style="width: 200px" @onclick="() => { Game.DrawCards(0); }">PASS</button>
+							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@buttonDisabled">PASS</button>
 						</div>
 					</row>
 				</div>
 			</div>
 
-			<h2 class="text-center mt-4">Round 1</h2>
-			<div class="container">
-
-				@foreach (Player player in Game.players)
-				{
-					<div class="row mt-12" style="padding: 5px">
-						<div style="border-style: solid; width: 1000px; height: 150px;">
-							<h3>@player.name</h3>
-
-							<div class="form-group">
-
-								@foreach (Card card in player.cards)
-								{
-									<img src="card_assets/@card.displayName" alt="@card.id" />
-								}
-
-							</div>
-
-
-						</div>
-
-						<h3>@player.score</h3>
-
-						<h3>@player.status</h3>
-
-					</div>
-				}
-			</div>
 			break;
-	}
+	 }
 </div>
 
 
 @code {
 
+	bool buttonDisabled = false;
 
+	private void GoToOverallScore()
+	{
+		NavigationManager.NavigateTo("/OverallScore");
+	}
+
+	private void DisableButtons()
+	{
+		buttonDisabled = true;
+	}
+
+	private string ContainerColor(Player player)
+	{
+		if (player.isWinner == true)
+		{
+			return "green-solid";
+		}
+		else if (player.isCurrentPlayer == true)
+		{
+			return "purple-solid";
+		}
+		else if (player.status == PlayerStatus.bust)
+		{
+			return "grey-solid";
+		}
+		return "purple-outline";
+	}
+
+	private string PlayerStatusToString(Player player)
+	{
+		if (player.status == PlayerStatus.bust)
+		{
+			return "Busted";
+		}
+		else if (player.status == PlayerStatus.win)
+		{
+			return "Winner!";
+		}
+		else if (player.status == PlayerStatus.stay)
+		{
+			return "Stayed";
+		}
+		return "";
+	}
 }

@@ -39,6 +39,7 @@ namespace RaceTo21_BlazorApp
         public static void DrawCards(int cardsPicked)
         {
             Player player = players[currentPlayer];
+
             cardTable.ShowHand(player); // players hands are shown in console
             if (player.status == PlayerStatus.active)
             {
@@ -66,8 +67,72 @@ namespace RaceTo21_BlazorApp
                 }
             }
             cardTable.ShowHand(player); // show hand to players.
-            nextTask = AllTasks.CheckForEnd;
-            currentPlayer++;
+            CheckForRoundEnd();
+        }
+
+        public static void CheckForEnd()
+        {
+            if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
+            {
+                rounds++;
+                Console.WriteLine("================================");
+                Player winner = DoRoundScoring(); // adds scores of players within the Round.
+                cardTable.AnnounceWinner(winner); // announce the winner of the round
+
+                Player overallWinner = DoOverallScoring(); // adds to the overall scoring and updates scoreboard.
+                cardTable.ShowScoreboard(players); // displays scoreboard
+
+                if (overallWinner != null) // if there is a winner
+                {
+                    cardTable.AnnounceOverallWinner(overallWinner); // announce winner
+                    nextTask = AllTasks.GameOver; // GAME ENDS
+                }
+                else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
+                {
+                    nextTask = AllTasks.GameOver; // GAME ENDS
+                }
+                else // if continuing to the next round then:
+                {
+                    ResetRound(); // Reset the players.
+                    nextTask = AllTasks.PlayerTurn; // Move on to the next turn in the next round
+                }
+            }
+            else
+            {
+                currentPlayer++;
+                //CheckIfCurrent();
+
+                if (currentPlayer > players.Count - 1)
+                {
+                    currentPlayer = 0; // back to the first player...
+                    //CheckIfCurrent();
+                }
+                nextTask = AllTasks.PlayerTurn;
+            }
+        }
+
+
+        public static void CheckForRoundEnd()
+        {
+            if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
+            {
+                rounds++;
+                Player winner = DoRoundScoring(); // adds scores of players within the Round.
+                winner.isWinner = true;
+                cardTable.AnnounceWinner(winner); // announce the winner of the round
+            }
+            else
+            {
+                currentPlayer++;
+                //CheckIfCurrent();
+
+                if (currentPlayer > players.Count - 1)
+                {
+                    currentPlayer = 0; // back to the first player...
+                    //CheckIfCurrent();
+                }
+                nextTask = AllTasks.PlayerTurn;
+            }
         }
 
         /* Function: DoNextTask() **********
@@ -213,6 +278,21 @@ namespace RaceTo21_BlazorApp
             return score;
         }
 
+        /**************************************************************************** NEEDS TO BE ADDED IN THE END
+        public static void CheckIfCurrent()
+        {
+            foreach (Player player in players)
+                if (player.name == players[currentPlayer].name)
+                {
+                    player.isCurrentPlayer = true;
+
+                }
+                else
+                {
+                    player.isCurrentPlayer = false;
+                }
+        }
+        *********************************************************************************************/
         /* Function: CheckActivePlayers() **********
          * Checks if each player is acrtive or not
          * Returns true if at least one player is active
@@ -363,6 +443,8 @@ namespace RaceTo21_BlazorApp
 
             //players.Remove(winner);
             currentPlayer = 0;
+            //CheckIfCurrent();
+
             deck = new Deck();
             deck.Shuffle();
 
@@ -374,6 +456,5 @@ namespace RaceTo21_BlazorApp
             Console.Write($"Starting Round # {rounds + 1}");
 
         }
-
     }
 }

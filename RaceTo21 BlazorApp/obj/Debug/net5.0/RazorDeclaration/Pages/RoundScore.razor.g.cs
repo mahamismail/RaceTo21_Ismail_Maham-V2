@@ -90,6 +90,25 @@ using RaceTo21_BlazorApp;
         {
         }
         #pragma warning restore 1998
+#nullable restore
+#line 130 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\RoundScore.razor"
+       
+
+	private void LeaveGame()
+	{
+
+		NavigationManager.NavigateTo("/");
+	}
+
+	private void GoToGamePage()
+	{
+
+		NavigationManager.NavigateTo("/Gameplay");
+	}
+
+#line default
+#line hidden
+#nullable disable
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }

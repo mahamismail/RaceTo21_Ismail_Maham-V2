@@ -7,15 +7,14 @@ namespace RaceTo21_BlazorApp
     public class Deck
     {
         List<Card> cards = new List<Card>();
-
+        public static Dictionary<string, string> imageIDs = new Dictionary<string, string>(); // add a dictionary for keeping image png Ids
+        
         public Deck()
         {
             Console.WriteLine("================================");
             Console.WriteLine("********* Building deck ********");
             string[] suits = { "Spades", "Hearts", "Clubs", "Diamonds" };
             int cardCounter = 0;
-
-            Dictionary<string, string> imageIDs = new Dictionary<string, string>(); // add a dictionary for keeping image png Ids
 
             for (int cardVal = 1; cardVal <= 13; cardVal++)
             {

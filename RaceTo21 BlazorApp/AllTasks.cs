@@ -5,9 +5,10 @@ namespace RaceTo21_BlazorApp
     {
         GetNumberOfPlayers,
         GetNames,
-        IntroducePlayers,
         PlayerTurn,
         CheckForEnd,
+        ShowRoundScores,
+        ShowOverallScores,
         GameOver
     }
 }

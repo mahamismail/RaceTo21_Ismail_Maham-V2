@@ -10,11 +10,16 @@ namespace RaceTo21_BlazorApp
 		public PlayerStatus status = PlayerStatus.active;
 		public int score;
 		public int overallScore;
+		public bool isCurrentPlayer;
+		public bool isWinner;
 
 		public Player(string n)
 		{
 			name = n;
-        }
+			isCurrentPlayer = false;
+			isWinner = false;
+
+		}
 
 		/* Function: Introduce() **********
 		 * Introduces plyer by name.
@@ -31,9 +36,12 @@ namespace RaceTo21_BlazorApp
 		************************************/
 		public void ResetPlayer()
         {
+			isCurrentPlayer = false;
+			isWinner = false;
 			status = PlayerStatus.active;
 			cards.Clear();
         }
+
 	}
 }
 

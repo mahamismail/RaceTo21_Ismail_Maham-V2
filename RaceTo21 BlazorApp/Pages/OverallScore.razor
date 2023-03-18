@@ -46,7 +46,7 @@
 	}
 
 	.form-control {
-		background-color: #D3D3D3; /* set the background color to grey */
+		background-color: #CBC3E3; /* set the background color to grey */
 		width: 200px; /* set the width to your desired size */
 		font-size: 20px;
 		font-weight: bold;
@@ -99,7 +99,7 @@
 
 		@switch (Game.nextTask)
 		{
-			case AllTasks.IntroducePlayers:
+			case AllTasks.ShowOverallScores:
 
 				<h2 class="text-center mt-4">Overall Scores</h2>
 
@@ -116,7 +116,7 @@
 
 					}
 				</div>
-				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.PlayerTurn; GoToGamePage(); }">BEGIN ROUND 1</button>
+				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.PlayerTurn; /*Game.players[Game.currentPlayer].isCurrentPlayer = true;*/ GoToGamePage(); }">BEGIN ROUND @(Game.rounds+1)</button>
 				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="LeaveGame">
 					← Leave Game
 				</button>
