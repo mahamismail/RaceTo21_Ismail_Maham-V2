@@ -13,7 +13,6 @@
 
 	.fixed-bottom {
 		justify-content: center;
-
 	}
 
 	.row {
@@ -34,7 +33,6 @@
 		padding: 10px 20px; /* adjust the padding to your preference */
 		font-size: 16px; /* adjust the font size to your preference */
 		font-weight: 500;
-		width: 200px;
 	}
 
 	#numberInput {
@@ -112,34 +110,68 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-<div class="fixed-bottom">
-	<div class="nav greyNav">
-		<row class="row">
-			<div class="col-md-3">
-				<label for="playerName" style="font-weight: bold; font-size: 20px">PlayerName</label>
+
+
+<div class="container">
+	@switch (Game.nextTask)
+	{
+		case AllTasks.PlayerTurn:
+
+			<div class="fixed-bottom">
+				<div class="nav greyNav">
+					<row class="row">
+						<div class="col-md-3">
+							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
+						</div>
+						<div class="col-md-6">
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); }">PICK 1 CARD</button>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); }">PICK 2 CARDS</button>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); }">PICK 3 CARDS</button>
+						</div>
+						<div class="col-md-1" style="text-align: center">
+							<label>OR</label>
+						</div>
+						<div class="col-md-2">
+							<button class="btn btn-purple btn-rounded" style="width: 200px" @onclick="() => { Index.cardTable.numOfCardsPicked = 0; Game.nextTask = AllTasks.PlayerTurn; }">PASS</button>
+						</div>
+					</row>
+				</div>
 			</div>
-			<div class="col-md-6">
-				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 1 CARD</button>
-				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 2 CARDS</button>
-				<button class="btn btn-purple btn-rounded" style="width: 200px">PICK 3 CARDS</button>
+
+			<h2 class="text-center mt-4">Round 1</h2>
+			<div class="container">
+
+				@foreach (Player player in Game.players)
+				{
+					<div class="row mt-12" style="padding: 5px">
+						<div style="border-style: solid; width: 1000px; height: 150px;">
+							<h3>@player.name</h3>
+
+							<div class="form-group">
+
+								@foreach (Card card in player.cards)
+								{
+									<img src="card_assets/@card.displayName" alt="@card.id" />
+								}
+
+							</div>
+
+
+						</div>
+
+						<h3>@player.score</h3>
+
+						<h3>@player.status</h3>
+
+					</div>
+				}
 			</div>
-			<div class="col-md-1" style="text-align: center">
-				<label >OR</label>
-			</div>
-			<div class="col-md-2">
-				<button class="btn btn-purple btn-rounded" style="width: 200px">PASS</button>
-			</div>
-		</row>
-	</div>
+			break;
+	}
 </div>
-
-<div class="col-4 playerSpace">
-
-</div>
-
-
 
 
 @code {
+
 
 }

@@ -94,10 +94,10 @@ using RaceTo21_BlazorApp;
 #line 130 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
        
 
-	private void ReturnToPlayers()
+	private void LeaveGame()
 	{
 
-		NavigationManager.NavigateTo("/NumberOfPlayers");
+		NavigationManager.NavigateTo("/");
 	}
 
 	private void GoToGamePage()

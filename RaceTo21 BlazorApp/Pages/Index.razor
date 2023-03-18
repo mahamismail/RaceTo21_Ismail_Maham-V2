@@ -69,14 +69,19 @@
 			<b>Hey there, card sharks!</b><br><br>
 			Draw cards and try to get as close to <b>21 points</b> as possible without going over. The game keeps going until there's only one player left standing or until everyone gives up. To determine the ultimate winner, keep playing multiple rounds until someone has a total of <b>50 or more points</b> across all rounds. It's a fun way to test your luck and strategy with a deck of cards. So what are you waiting for? Shuffle up and let's play!
 		</p>
-		<button class="btn btn-purple btn-rounded" type="button" @onclick="GoToPlayerPage">BEGIN GAME</button>
+		<button class="btn btn-purple btn-rounded" type="button" @onclick="() => { SetUpGame(); GoToPlayerPage(); }">BEGIN GAME</button>
 	</div>
 </div>
 
 @code {
 
-	//public static CardTable cardTable = new CardTable();
-	public static Game game = new Game();
+	public static CardTable cardTable = new CardTable();
+
+	public static void SetUpGame()
+	{
+		Game game = new Game(cardTable);
+		Game.tempNames = new string[8];
+	}
 
 	private void GoToPlayerPage()
 	{

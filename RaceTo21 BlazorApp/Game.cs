@@ -16,13 +16,14 @@ namespace RaceTo21_BlazorApp
 
         public static int rounds = 0; // the number of rounds played
 
-        public Game(/*CardTable c*/)
+        public Game(CardTable c)
         {
-            //cardTable = c;
+            cardTable = c;
             deck.Shuffle();
             //deck.ShowAllCards();
             nextTask = AllTasks.GetNumberOfPlayers;
         }
+
 
 
         /* Function: AddPlayer() **********
@@ -35,12 +36,46 @@ namespace RaceTo21_BlazorApp
 
         }
 
+        public static void DrawCards(int cardsPicked)
+        {
+            Player player = players[currentPlayer];
+            cardTable.ShowHand(player); // players hands are shown in console
+            if (player.status == PlayerStatus.active)
+            {
+                if (cardsPicked == 0) // if player picks 0 cards their status changes to STAY.
+                {
+                    player.status = PlayerStatus.stay;
+                }
+                else if (cardsPicked <= 3 && cardsPicked != 0) // If player picks less than or equal to 3 cards, enter this.
+                {
+                    for (int i = 0; i < cardsPicked; i++) // this loops according to the number of cards needed. If 3, deals out and adds 3 cards.
+                    {
+                        Card card = deck.DealTopCard();
+                        player.cards.Add(card);
+                    }
+                    player.score = ScoreHand(player); // immediately checks if score made player go bust or win.
+
+                    if (player.score > 21)
+                    {
+                        player.status = PlayerStatus.bust;
+                    }
+                    else if (player.score == 21)
+                    {
+                        player.status = PlayerStatus.win;
+                    }
+                }
+            }
+            cardTable.ShowHand(player); // show hand to players.
+            nextTask = AllTasks.CheckForEnd;
+            currentPlayer++;
+        }
+
         /* Function: DoNextTask() **********
          * Figures out what task to do next in game
          * as represented by field nextTask
          * Calls methods required to complete task
          * then sets nextTask.
-        ************************************/
+        
         public static void DoNextTask()
         {
             if (nextTask == AllTasks.GetNumberOfPlayers) // gets number of player
@@ -64,26 +99,17 @@ namespace RaceTo21_BlazorApp
             else if (nextTask == AllTasks.IntroducePlayers) // player is introduced in console
             {
                 Console.WriteLine("================================");
-                cardTable.ShowPlayers(players);
                 cardTable.ShowScoreboard(players);
                 Console.Write($"Starting Round # {rounds + 1}");
                 nextTask = AllTasks.PlayerTurn;
             }
             else if (nextTask == AllTasks.PlayerTurn)
             {
-                Console.WriteLine();
-                Console.WriteLine("================================");
-                cardTable.ShowHands(players); // players hands are shown in console
                 Player player = players[currentPlayer];
+                cardTable.ShowHand(player); // players hands are shown in console
                 if (player.status == PlayerStatus.active)
                 {
-                    /*********************** Level 1 Feature *******************************
-                    A player can choose to draw up to 3 cards each turn, but they get all 
-                    cards at once; they don’t get to decide after each card
-
-                    Meethod created HowManyCards()
-                    ************************************************************************/
-                    if (cardTable.HowManyCards(player) == 0) // if player picks 0 cards their status changes to STAY.
+                    if (cardTable.numOfCardsPicked == 0) // if player picks 0 cards their status changes to STAY.
                     {
                         player.status = PlayerStatus.stay;
                     }
@@ -112,18 +138,6 @@ namespace RaceTo21_BlazorApp
             }
             else if (nextTask == AllTasks.CheckForEnd) // check if the Round is ending
             {
-                /*********************** Level 2 Feature *******************************
-        
-                Only the winning player earns points equal to their score that round. 
-                    o Players who went “bust” lose points equal to their hand total minus 21. 
-                    o Game ends when one player reaches an agreed-upon score (for example, 50 points)
-
-                >Player plays multiple rounds until one player reaches overallTarget.<
-
-                Methods added: ResetRound(), ResetPlayer(), AnnounceOverallWinner(), 
-                DoOverallScoring(), PlayAnotherRound, ShowScoreboard()
-
-                ************************************************************************/
 
                 if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
                 {
@@ -166,6 +180,7 @@ namespace RaceTo21_BlazorApp
                 nextTask = AllTasks.GameOver;
             }
         }
+        ************************************/
 
 
         /* Function: ScoreHand() **********
@@ -177,40 +192,25 @@ namespace RaceTo21_BlazorApp
         public static int ScoreHand(Player player)
         {
             int score = 0;
-
-            if (cheating == true && player.status == PlayerStatus.active)
+            foreach (Card card in player.cards)
             {
-                string response = null;
-                while (int.TryParse(response, out score) == false)
+                string faceValue = card.id.Remove(card.id.Length - 1);
+                switch (faceValue)
                 {
-                    Console.Write("OK, what should player " + player.name + "'s score be?");
-                    response = Console.ReadLine();
-                }
-                return score;
-            }
-            else
-            {
-                foreach (Card card in player.cards)
-                {
-                    string faceValue = card.id.Remove(card.id.Length - 1);
-                    switch (faceValue)
-                    {
-                        case "K":
-                        case "Q":
-                        case "J":
-                            score = score + 10;
-                            break;
-                        case "A":
-                            score = score + 1;
-                            break;
-                        default:
-                            score = score + int.Parse(faceValue);
-                            break;
-                    }
+                    case "K":
+                    case "Q":
+                    case "J":
+                        score = score + 10;
+                        break;
+                    case "A":
+                        score = score + 1;
+                        break;
+                    default:
+                        score = score + int.Parse(faceValue);
+                        break;
                 }
             }
             return score;
-
         }
 
         /* Function: CheckActivePlayers() **********

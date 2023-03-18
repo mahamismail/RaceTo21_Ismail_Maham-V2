@@ -32,11 +32,11 @@ namespace RaceTo21_BlazorApp
          * Reads the user input from player.
          * Called by Game object during player turn.
          * Returns console input as an int: numberOfPlayers
-         *****************************************/
+         
         public int GetNumberOfPlayers()
         {
             Console.Write("How many players? ");
-            string response = Console.ReadLine();
+            string response;
             int numberOfPlayers;
             while (int.TryParse(response, out numberOfPlayers) == false
                 || numberOfPlayers < 2 || numberOfPlayers > 8)
@@ -47,13 +47,14 @@ namespace RaceTo21_BlazorApp
             }
             return numberOfPlayers;
         }
+        *****************************************/
 
         /* Function: GetPlayerName() ****************
          * Reads the user input for name.
          * Called by Game object during player turn.
          * Game object provides player number
          * Returns console input as a string: response (name of the player).
-         *****************************************/
+         
         public string GetPlayerName(int playerNum)
         {
             Console.Write("What is the name of player# " + playerNum + "? ");
@@ -66,6 +67,8 @@ namespace RaceTo21_BlazorApp
             }
             return response;
         }
+        *****************************************/
+
 
 
         /* Function: HowManyCards() **********
@@ -78,36 +81,10 @@ namespace RaceTo21_BlazorApp
          ************************************/
         public int HowManyCards(Player player)
         {
-            Console.WriteLine();
-            Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
-            string response = Console.ReadLine();
-            Console.WriteLine();
-
-            if (response.ToUpper().StartsWith("3")) // Pick 3
-            {
-                numOfCardsPicked = 3;
-            }
-            else if (response.ToUpper().StartsWith("2")) // Pick 2
-            {
-                numOfCardsPicked = 2;
-            }
-            else if (response.ToUpper().StartsWith("1")) // Pick 1
-            {
-                numOfCardsPicked = 1;
-            }
-            else if (response.ToUpper().StartsWith("0")) // This is stay
-            {
-                numOfCardsPicked = 0;
-            }
-            else // if output other than 0, 1, 2, 3 put in then tell them to get it write.
-            {
-                Console.WriteLine("Invalid number of cards. Choose 0, 1, 2, or 3!");
-                Console.WriteLine();
-                Console.Write(player.name + ": How many cards? - 0 is STAY (0/1/2/3)");
-                response = Console.ReadLine();
-            }
+            Console.Write($"{player.name} picked {numOfCardsPicked}");
             return numOfCardsPicked; // returns 0, 1, 2 or 3 only
         }
+        
 
 
         /* Function: ShowHand() **********
@@ -158,6 +135,7 @@ namespace RaceTo21_BlazorApp
             }
         }
 
+
         /* Function: AnnounceWinner() **********
          * Displays the winner in the current round.
          * Called by the Game object during Player Turn
@@ -193,9 +171,6 @@ namespace RaceTo21_BlazorApp
             Console.WriteLine($"~~{player.name} wins the game!~~");
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
             Console.WriteLine("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-            Console.Write("Press <Enter> to exit... "); // GAME END.
-            while (Console.ReadKey().Key != ConsoleKey.Enter) { };
             //}
         }
 
@@ -226,23 +201,7 @@ namespace RaceTo21_BlazorApp
         ************************************/
         public bool PlayAnotherRound()
         {
-            while (true)
-            {
-                Console.Write("Would you like to continue? (Y/N)");
-                string response = Console.ReadLine();
-                if (response.ToUpper().StartsWith("Y"))
-                {
-                    return true;
-                }
-                else if (response.ToUpper().StartsWith("N"))
-                {
-                    return false;
-                }
-                else
-                {
-                    Console.WriteLine("Please answer Y(es) or N(o)!");
-                }
-            }
+            return true;
         }
 
 

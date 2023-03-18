@@ -101,9 +101,6 @@
 		{
 			case AllTasks.IntroducePlayers:
 
-				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="ReturnToPlayers">
-					← Back
-				</button>
 				<h2 class="text-center mt-4">Overall Scores</h2>
 
 				<div class="row mt-12" style="padding: 5px">
@@ -119,7 +116,10 @@
 
 					}
 				</div>
-				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="GoToGamePage">BEGIN ROUND 1</button>
+				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.PlayerTurn; GoToGamePage(); }">BEGIN ROUND 1</button>
+				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="LeaveGame">
+					← Leave Game
+				</button>
 				break;
 		}
 
@@ -129,10 +129,10 @@
 
 @code {
 
-	private void ReturnToPlayers()
+	private void LeaveGame()
 	{
 
-		NavigationManager.NavigateTo("/NumberOfPlayers");
+		NavigationManager.NavigateTo("/");
 	}
 
 	private void GoToGamePage()
