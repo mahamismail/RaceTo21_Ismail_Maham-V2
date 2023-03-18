@@ -132,7 +132,7 @@
 							<label>OR</label>
 						</div>
 						<div class="col-md-2">
-							<button class="btn btn-purple btn-rounded" style="width: 200px" @onclick="() => { Index.cardTable.numOfCardsPicked = 0; Game.nextTask = AllTasks.PlayerTurn; }">PASS</button>
+							<button class="btn btn-purple btn-rounded" style="width: 200px" @onclick="() => { Game.DrawCards(0); }">PASS</button>
 						</div>
 					</row>
 				</div>
