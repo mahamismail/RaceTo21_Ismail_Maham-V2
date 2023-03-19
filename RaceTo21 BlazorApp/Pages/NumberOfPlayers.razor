@@ -117,25 +117,8 @@
 
 				@if (Game.numberOfPlayers > 0)
 				{
-					<div class="row mt-12" style="padding: 5px">
-						@for (var i = 0; i < 4 && i < Game.numberOfPlayers; i++)
-						{
-							int playerNumber = i;
-							<div class="col md-3">
-								<div class="form-group">
-									<label for="playerInput@(playerNumber)">Player @(playerNumber + 1)</label>
-									<input type="text" class="form-control" @bind-value="Game.tempNames[playerNumber]" />
-								</div>
-							</div>
-						}
-
-					</div>
-				}
-
-				@if (Game.numberOfPlayers > 4)
-				{
-					<div class="row mt-12" style="padding: 5px">
-						@for (var i = 4; i < 8 && i < Game.numberOfPlayers; i++)
+					<div class="row mt-12" style="padding: 5px; display: flex; flex-direction: row;">
+						@for (var i = 0; i < Game.numberOfPlayers; i++)
 						{
 							int playerNumber = i;
 							<div class="col md-3">
@@ -147,6 +130,7 @@
 						}
 					</div>
 				}
+
 				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToScorePage(); }">     PLAY     </button>
 				break;
 		}

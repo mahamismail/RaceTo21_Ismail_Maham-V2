@@ -91,7 +91,7 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 197 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+#line 203 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
 	bool buttonDisabled = false;
@@ -106,20 +106,39 @@ using RaceTo21_BlazorApp;
 		buttonDisabled = true;
 	}
 
+	private void UpdatePlayerList()
+	{
+		foreach (Player player in Game.players)
+		{
+			if (player.isCurrentPlayer == true)
+			{
+				StateHasChanged();
+			}
+		}
+
+		JSRuntime.InvokeVoidAsync("scrollToPlayerList");
+	}
+
+	private async Task ScrollToPlayerList()
+	{
+		await JSRuntime.InvokeVoidAsync("scrollToElement", "playerList");
+	}
+
 	private string ContainerColor(Player player)
 	{
 		if (player.isWinner == true)
 		{
 			return "green-solid";
 		}
-		else if (player.isCurrentPlayer == true)
-		{
-			return "purple-solid";
-		}
 		else if (player.status == PlayerStatus.bust)
 		{
 			return "grey-solid";
 		}
+		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.active)
+		{
+			return "purple-solid";
+		}
+		
 		return "purple-outline";
 	}
 
@@ -143,6 +162,7 @@ using RaceTo21_BlazorApp;
 #line default
 #line hidden
 #nullable disable
+        [global::Microsoft.AspNetCore.Components.InjectAttribute] private IJSRuntime JSRuntime { get; set; }
         [global::Microsoft.AspNetCore.Components.InjectAttribute] private NavigationManager NavigationManager { get; set; }
     }
 }

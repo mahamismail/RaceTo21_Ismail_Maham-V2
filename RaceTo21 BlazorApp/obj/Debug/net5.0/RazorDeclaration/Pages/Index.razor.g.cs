@@ -91,7 +91,7 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 76 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Index.razor"
+#line 78 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Index.razor"
        
 
 	public static CardTable cardTable = new CardTable();

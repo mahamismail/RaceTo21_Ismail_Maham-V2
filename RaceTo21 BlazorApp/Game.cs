@@ -25,7 +25,6 @@ namespace RaceTo21_BlazorApp
         }
 
 
-
         /* Function: AddPlayer() **********
          * Adds new player and it's name to the list.
          * Called by DoNextTask() method in Game object
@@ -100,12 +99,12 @@ namespace RaceTo21_BlazorApp
             else
             {
                 currentPlayer++;
-                //CheckIfCurrent();
+                CheckIfCurrent();
 
                 if (currentPlayer > players.Count - 1)
                 {
                     currentPlayer = 0; // back to the first player...
-                    //CheckIfCurrent();
+                    CheckIfCurrent();
                 }
                 nextTask = AllTasks.PlayerTurn;
             }
@@ -124,12 +123,12 @@ namespace RaceTo21_BlazorApp
             else
             {
                 currentPlayer++;
-                //CheckIfCurrent();
+                CheckIfCurrent();
 
                 if (currentPlayer > players.Count - 1)
                 {
                     currentPlayer = 0; // back to the first player...
-                    //CheckIfCurrent();
+                    CheckIfCurrent();
                 }
                 nextTask = AllTasks.PlayerTurn;
             }
@@ -279,20 +278,21 @@ namespace RaceTo21_BlazorApp
         }
 
         /**************************************************************************** NEEDS TO BE ADDED IN THE END
+         * *********************************************************************************************/
         public static void CheckIfCurrent()
         {
             foreach (Player player in players)
-                if (player.name == players[currentPlayer].name)
+                if (players.IndexOf(player) == currentPlayer)
                 {
                     player.isCurrentPlayer = true;
-
                 }
                 else
                 {
                     player.isCurrentPlayer = false;
                 }
         }
-        *********************************************************************************************/
+
+        
         /* Function: CheckActivePlayers() **********
          * Checks if each player is acrtive or not
          * Returns true if at least one player is active
@@ -443,7 +443,7 @@ namespace RaceTo21_BlazorApp
 
             //players.Remove(winner);
             currentPlayer = 0;
-            //CheckIfCurrent();
+            CheckIfCurrent();
 
             deck = new Deck();
             deck.Shuffle();
