@@ -38,6 +38,7 @@ namespace RaceTo21_BlazorApp
         {
 			isCurrentPlayer = false;
 			isWinner = false;
+			score = 0;
 			status = PlayerStatus.active;
 			cards.Clear();
         }

@@ -24,6 +24,12 @@ namespace RaceTo21_BlazorApp
             nextTask = AllTasks.GetNumberOfPlayers;
         }
 
+        public static void SetUpGame()
+        {
+            Game game = new Game(cardTable);
+            Game.tempNames = new string[8];
+            Game.players = new List<Player>();
+        }
 
         /* Function: AddPlayer() **********
          * Adds new player and it's name to the list.
@@ -92,7 +98,6 @@ namespace RaceTo21_BlazorApp
                 }
                 else // if continuing to the next round then:
                 {
-                    ResetRound(); // Reset the players.
                     nextTask = AllTasks.PlayerTurn; // Move on to the next turn in the next round
                 }
             }

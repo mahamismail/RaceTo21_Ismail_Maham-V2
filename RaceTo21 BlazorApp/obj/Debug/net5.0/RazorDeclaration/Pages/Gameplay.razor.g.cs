@@ -91,10 +91,16 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 203 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+#line 201 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
 	bool buttonDisabled = false;
+
+	private void LeaveGame()
+	{
+
+		NavigationManager.NavigateTo("/");
+	}
 
 	private void GoToOverallScore()
 	{
@@ -138,7 +144,7 @@ using RaceTo21_BlazorApp;
 		{
 			return "purple-solid";
 		}
-		
+
 		return "purple-outline";
 	}
 

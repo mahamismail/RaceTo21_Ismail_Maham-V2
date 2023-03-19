@@ -150,28 +150,26 @@
 						DisableButtons();
 						<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
 							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ @player.name wins! ~ 🎊</h4>
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); }">View Scores</button>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; Game.cardTable.ShowScoreboard(Game.players); Game.DoRoundScoring(); GoToOverallScore(); }">View Scores</button>
 						</div>
 					}
 				}
 
 				@foreach (Player player in Game.players)
 				{
-					
-						<div id="Player@(Game.players.IndexOf(player))" style="flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; margin: 10px 30px 0 30px; display: inline-block;">
-							<label class="@(player.isCurrentPlayer || player.isWinner ? "purple-text" : " ")" style="font-weight: bold; font-size: 20px">@player.name</label>
-							<div style="display:flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-								<div class="row mt-12 card-container @ContainerColor(player)" style="padding: 10px; height: 90px; width: 600px; margin-right: 10px">
-									@foreach (Card card in player.cards)
-									{
-										<img class="card-image" src="card_assets/@Deck.imageIDs[$"{card.id}"]" alt="@card.id" />
-									}
-								</div>
-								<h3 style="margin-right: 10px; display: inline-block; border: 2px solid; padding: 10px; border-radius: 100px ">@player.score</h3>
-								<h4 class="@ContainerColor(player)" style="margin-left:20px; font-weight: 400; padding: 10px; border-radius: 10px">@PlayerStatusToString(player)</h4>
+					<div id="Player@(Game.players.IndexOf(player))" style="flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; margin: 10px 30px 0 30px; display: inline-block;">
+						<label class="@(player.isCurrentPlayer || player.isWinner ? "purple-text" : " ")" style="font-weight: bold; font-size: 20px">@player.name</label>
+						<div style="display:flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+							<div class="row mt-12 card-container @ContainerColor(player)" style="padding: 10px; height: 90px; width: 600px; margin-right: 10px">
+								@foreach (Card card in player.cards)
+								{
+									<img class="card-image" src="card_assets/@Deck.imageIDs[$"{card.id}"]" alt="@card.id" />
+								}
 							</div>
+							<h3 style="margin-right: 10px; display: inline-block; border: 2px solid; padding: 10px; border-radius: 100px ">@player.score</h3>
+							<h4 class="@ContainerColor(player)" style="margin-left:20px; font-weight: 400; padding: 10px; border-radius: 10px">@PlayerStatusToString(player)</h4>
 						</div>
-					
+					</div>
 				}
 			</div>
 
@@ -182,9 +180,9 @@
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
 						<div class="col-md-6">
-							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); UpdatePlayerList(); }" disabled="@buttonDisabled">PICK 1 CARD</button>
-							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); UpdatePlayerList(); }" disabled="@buttonDisabled">PICK 2 CARDS</button>
-							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); UpdatePlayerList(); }" disabled="@buttonDisabled">PICK 3 CARDS</button>
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@buttonDisabled">PICK 1 CARD</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 2 CARDS</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 3 CARDS</button>
 						</div>
 						<div class="col-md-1" style="text-align: center">
 							<label>OR</label>
