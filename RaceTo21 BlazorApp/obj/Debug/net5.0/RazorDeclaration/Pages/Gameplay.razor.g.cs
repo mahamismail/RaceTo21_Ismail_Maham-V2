@@ -136,7 +136,7 @@ using RaceTo21_BlazorApp;
 		{
 			return "green-solid";
 		}
-		else if (player.status == PlayerStatus.bust)
+		else if (player.status == PlayerStatus.bust || player.status == PlayerStatus.stay)
 		{
 			return "grey-solid";
 		}
@@ -153,6 +153,10 @@ using RaceTo21_BlazorApp;
 		if (player.status == PlayerStatus.bust)
 		{
 			return "Busted";
+		}
+		else if (player.status == PlayerStatus.stay)
+		{
+			return "Stayed";
 		}
 		else if (player.status == PlayerStatus.win)
 		{
