@@ -91,7 +91,7 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 201 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+#line 204 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
 	bool buttonDisabled = false;
@@ -143,6 +143,10 @@ using RaceTo21_BlazorApp;
 		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.active)
 		{
 			return "purple-solid";
+		}
+		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.tie)
+		{
+			return "grey-solid";
 		}
 
 		return "purple-outline";

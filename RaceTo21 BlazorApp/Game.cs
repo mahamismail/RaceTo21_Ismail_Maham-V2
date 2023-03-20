@@ -24,12 +24,7 @@ namespace RaceTo21_BlazorApp
             nextTask = AllTasks.GetNumberOfPlayers;
         }
 
-        public static void SetUpGame()
-        {
-            Game game = new Game(cardTable);
-            Game.tempNames = new string[8];
-            Game.players = new List<Player>();
-        }
+
 
         /* Function: AddPlayer() **********
          * Adds new player and it's name to the list.
@@ -45,7 +40,6 @@ namespace RaceTo21_BlazorApp
         {
             Player player = players[currentPlayer];
 
-            cardTable.ShowHand(player); // players hands are shown in console
             if (player.status == PlayerStatus.active)
             {
                 if (cardsPicked == 0) // if player picks 0 cards their status changes to STAY.
@@ -71,50 +65,8 @@ namespace RaceTo21_BlazorApp
                     }
                 }
             }
-            cardTable.ShowHand(player); // show hand to players.
             CheckForRoundEnd();
         }
-
-        public static void CheckForEnd()
-        {
-            if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
-            {
-                rounds++;
-                Console.WriteLine("================================");
-                Player winner = DoRoundScoring(); // adds scores of players within the Round.
-                cardTable.AnnounceWinner(winner); // announce the winner of the round
-
-                Player overallWinner = DoOverallScoring(); // adds to the overall scoring and updates scoreboard.
-                cardTable.ShowScoreboard(players); // displays scoreboard
-
-                if (overallWinner != null) // if there is a winner
-                {
-                    cardTable.AnnounceOverallWinner(overallWinner); // announce winner
-                    nextTask = AllTasks.GameOver; // GAME ENDS
-                }
-                else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
-                {
-                    nextTask = AllTasks.GameOver; // GAME ENDS
-                }
-                else // if continuing to the next round then:
-                {
-                    nextTask = AllTasks.PlayerTurn; // Move on to the next turn in the next round
-                }
-            }
-            else
-            {
-                currentPlayer++;
-                CheckIfCurrent();
-
-                if (currentPlayer > players.Count - 1)
-                {
-                    currentPlayer = 0; // back to the first player...
-                    CheckIfCurrent();
-                }
-                nextTask = AllTasks.PlayerTurn;
-            }
-        }
-
 
         public static void CheckForRoundEnd()
         {
@@ -123,7 +75,6 @@ namespace RaceTo21_BlazorApp
                 rounds++;
                 Player winner = DoRoundScoring(); // adds scores of players within the Round.
                 winner.isWinner = true;
-                cardTable.AnnounceWinner(winner); // announce the winner of the round
             }
             else
             {
@@ -138,119 +89,6 @@ namespace RaceTo21_BlazorApp
                 nextTask = AllTasks.PlayerTurn;
             }
         }
-
-        /* Function: DoNextTask() **********
-         * Figures out what task to do next in game
-         * as represented by field nextTask
-         * Calls methods required to complete task
-         * then sets nextTask.
-        
-        public static void DoNextTask()
-        {
-            if (nextTask == AllTasks.GetNumberOfPlayers) // gets number of player
-            {
-                Console.WriteLine("================================");
-                numberOfPlayers = cardTable.GetNumberOfPlayers();
-                nextTask = AllTasks.GetNames;
-            }
-            else if (nextTask == AllTasks.GetNames) // get the name of player
-            {
-                Console.WriteLine("================================");
-                for (var count = 1; count <= numberOfPlayers; count++)
-                {
-                    var name = cardTable.GetPlayerName(count);
-                    AddPlayer(name); // NOTE: player list will start from 0 index even though we use 1 for our count here to make the player numbering more human-friendly
-                    
-                    List<Player> playersInRound = players;
-                }
-                nextTask = AllTasks.IntroducePlayers;
-            }
-            else if (nextTask == AllTasks.IntroducePlayers) // player is introduced in console
-            {
-                Console.WriteLine("================================");
-                cardTable.ShowScoreboard(players);
-                Console.Write($"Starting Round # {rounds + 1}");
-                nextTask = AllTasks.PlayerTurn;
-            }
-            else if (nextTask == AllTasks.PlayerTurn)
-            {
-                Player player = players[currentPlayer];
-                cardTable.ShowHand(player); // players hands are shown in console
-                if (player.status == PlayerStatus.active)
-                {
-                    if (cardTable.numOfCardsPicked == 0) // if player picks 0 cards their status changes to STAY.
-                    {
-                        player.status = PlayerStatus.stay;
-                    }
-                    else if (cardTable.numOfCardsPicked <= 3 && cardTable.numOfCardsPicked != 0) // If player picks less than or equal to 3 cards, enter this.
-                    {
-                        int numOfCards = cardTable.numOfCardsPicked;
-                        for (int i = 0; i < numOfCards; i++) // this loops according to the number of cards needed. If 3, deals out and adds 3 cards.
-                        {
-                            Card card = deck.DealTopCard();
-                            player.cards.Add(card);
-                        }
-                        player.score = ScoreHand(player); // immediately checks if score made player go bust or win.
-
-                        if (player.score > 21)
-                        {
-                            player.status = PlayerStatus.bust;
-                        }
-                        else if (player.score == 21)
-                        {
-                            player.status = PlayerStatus.win;
-                        }
-                    }
-                }
-                cardTable.ShowHand(player); // show hand to players.
-                nextTask = AllTasks.CheckForEnd;
-            }
-            else if (nextTask == AllTasks.CheckForEnd) // check if the Round is ending
-            {
-
-                if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
-                {
-                    rounds++;
-                    Console.WriteLine("================================");
-                    Player winner = DoRoundScoring(); // adds scores of players within the Round.
-                    cardTable.AnnounceWinner(winner); // announce the winner of the round
-
-                    Player overallWinner = DoOverallScoring(); // adds to the overall scoring and updates scoreboard.
-                    cardTable.ShowScoreboard(players); // displays scoreboard
-
-                    if (overallWinner != null) // if there is a winner
-                    {
-                        cardTable.AnnounceOverallWinner(overallWinner); // announce winner
-                        nextTask = AllTasks.GameOver; // GAME ENDS
-                    }
-                    else if (!cardTable.PlayAnotherRound()) // If they don't want to play another round
-                    {
-                        nextTask = AllTasks.GameOver; // GAME ENDS
-                    }
-                    else // if continuing to the next round then:
-                    {
-                        ResetRound(); // Reset the players.
-                        nextTask = AllTasks.PlayerTurn; // Move on to the next turn in the next round
-                    }
-                }
-                else
-                {
-                    currentPlayer++;
-                    if (currentPlayer > players.Count - 1)
-                    {
-                        currentPlayer = 0; // back to the first player...
-                    }
-                    nextTask = AllTasks.PlayerTurn;
-                }
-            }
-            else // we shouldn't get here...
-            {
-                Console.WriteLine("I'm sorry, I don't know what to do now!");
-                nextTask = AllTasks.GameOver;
-            }
-        }
-        ************************************/
-
 
         /* Function: ScoreHand() **********
          * Figures out what task to do next in game
@@ -336,7 +174,7 @@ namespace RaceTo21_BlazorApp
                 }
                 else if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
                 {
-                    if (counter == players.Count - 1) 
+                    if (counter == players.Count - 1)
                     {
                         player.status = PlayerStatus.win;
                         return true;
@@ -350,6 +188,8 @@ namespace RaceTo21_BlazorApp
                         return true;
                     }
                 }
+
+                
             }
             return false;
         }
@@ -365,7 +205,6 @@ namespace RaceTo21_BlazorApp
 
             foreach (var player in players)
             {
-                cardTable.ShowHand(player);
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
                     highScore = player.score;

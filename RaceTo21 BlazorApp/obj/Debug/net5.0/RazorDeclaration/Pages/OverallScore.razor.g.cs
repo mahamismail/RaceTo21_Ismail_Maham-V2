@@ -91,10 +91,24 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 151 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
+#line 158 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
        
 
-	Player overallWinner;
+	private Player overallWinner;
+
+	protected override void OnInitialized()
+	{
+		overallWinner = Game.DoOverallScoring();
+	}
+
+	private string OuterContainerChange()
+	{
+		if (overallWinner != null)
+		{
+			return "purple-outline";
+		}
+		return "";
+	}
 
 	private void GoToPlayerPage()
 	{

@@ -141,7 +141,10 @@
 	{
 		case AllTasks.PlayerTurn:
 
-			<h2 class="mt-4" style="margin-bottom: 20px;">Round @(Game.rounds+1)</h2>
+			<h2 class="mt-4" style="margin-bottom: 10px;">Round @(Game.rounds+1)</h2>
+			<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
+				<p>Score exactly 21 points or the highest possible <br /> number under 21 to win this round!</p>
+			</div>
 			<div style="margin-bottom: 10px; display: flex; flex-direction: column; align-items: flex-start;">
 				@foreach (Player player in Game.players)
 				{
@@ -149,8 +152,8 @@
 					{
 						DisableButtons();
 						<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
-							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ @player.name wins! ~ 🎊</h4>
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; Game.cardTable.ShowScoreboard(Game.players); Game.DoRoundScoring(); GoToOverallScore(); }">View Scores</button>
+							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ <b>@player.name</b> wins! ~ 🎊</h4>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); }">View Scores</button>
 						</div>
 					}
 				}
@@ -179,16 +182,16 @@
 						<div class="col-md-3">
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
-						<div class="col-md-6">
-							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@buttonDisabled">PICK 1 CARD</button>
-							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 2 CARDS</button>
-							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 3 CARDS</button>
-						</div>
-						<div class="col-md-1" style="text-align: center">
-							<label>OR</label>
-						</div>
-						<div class="col-md-2">
+						<div style="display:flex; flex-direction: row; justify-items: flex-end; align-items: center;">
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@buttonDisabled">PICK 1 CARD</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 2 CARDS</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 3 CARDS</button>
+							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
 							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@buttonDisabled">PASS</button>
+
+							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="LeaveGame">
+								← Leave Game
+							</button>
 						</div>
 					</row>
 				</div>
@@ -249,6 +252,10 @@
 		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.active)
 		{
 			return "purple-solid";
+		}
+		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.tie)
+		{
+			return "grey-solid";
 		}
 
 		return "purple-outline";
