@@ -16,19 +16,17 @@ namespace RaceTo21_BlazorApp
 
         public static int rounds = 0; // the number of rounds played
 
-        public Game(CardTable c)
+        public Game(CardTable c) // called in Game Setup
         {
             cardTable = c;
             deck.Shuffle();
-            //deck.ShowAllCards();
             nextTask = AllTasks.GetNumberOfPlayers;
         }
 
-
-
         /* Function: AddPlayer() **********
          * Adds new player and it's name to the list.
-         * Called by DoNextTask() method in Game object
+         * Called in GoToScorePage() on the numberOfPlayers.razor
+         when clicking PLAY button.
         ************************************/
         public static void AddPlayer(string n)
         {
@@ -36,6 +34,13 @@ namespace RaceTo21_BlazorApp
 
         }
 
+        /* Function: DrawCards() **********
+         * Draws 1,2,3 cards per player depending on
+         button pressed. If none car cards and stays
+        if PASS is pressed.
+         * Called in GoToScorePage() on the numberOfPlayers.razor
+         when clicking PLAY button.
+        ************************************/
         public static void DrawCards(int cardsPicked)
         {
             Player player = players[currentPlayer];
@@ -74,7 +79,6 @@ namespace RaceTo21_BlazorApp
             {
                 rounds++;
                 Player winner = DoRoundScoring(); // adds scores of players within the Round.
-                winner.isWinner = true;
             }
             else
             {
@@ -166,19 +170,12 @@ namespace RaceTo21_BlazorApp
              */
 
             int counter = 0;
+            int stayers = 0;
             foreach (var player in players)
             {
                 if (player.status == PlayerStatus.win)
                 {
                     return true;
-                }
-                else if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
-                {
-                    if (counter == players.Count - 1)
-                    {
-                        player.status = PlayerStatus.win;
-                        return true;
-                    }
                 }
                 else if (player.status == PlayerStatus.bust)
                 {
@@ -188,8 +185,34 @@ namespace RaceTo21_BlazorApp
                         return true;
                     }
                 }
-
+                else if (player.status == PlayerStatus.stay)
+                {
+                    counter++;
+                    stayers++;
+                    if (counter == players.Count - 1)
+                    {
+                        return true;
+                    }
+                    else if (stayers == players.Count)
+                    {
+                        for (var i = 0; i < numberOfPlayers; i++)
+                        {
+                            players[i].status = PlayerStatus.tie;
+                        }
+                        return false;
+                    }
+                }
                 
+                else if (player.status == PlayerStatus.active)
+                {
+                    if (counter == players.Count - 1)
+                    {
+                        player.status = PlayerStatus.win;
+                        return true;
+                    }
+                }
+
+
             }
             return false;
         }
@@ -208,6 +231,7 @@ namespace RaceTo21_BlazorApp
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
                     highScore = player.score;
+                    player.isWinner = true;
                     return player;
                 }
                 if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // still could win...
@@ -237,25 +261,19 @@ namespace RaceTo21_BlazorApp
         {
             foreach (var player in players)
             {
-                int counter = 0;
+                //int counter = 0;
 
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
                     player.overallScore += player.score; // ADD THE SCORE TO THE PLAYER'S OVERALL SCORE IF WIN
                 }
-                /*if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // still could win...
-                {
-                }*/
+
                 if (player.status == PlayerStatus.bust) // player went bust...
                 {
-                    counter++;
+                    //counter++;
                     player.overallScore -= (player.score - 21) ; // DEDUCT THE SCORE FROM THE PLAYER'S OVERALL SCORE IF BUST
-
-                    /*if (player.overallScore < 0)
-                    {
-                        player.overallScore = 0;
-                    }*/
                 }
+
                 if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // player went bust...
                 {
                     player.overallScore += player.score;

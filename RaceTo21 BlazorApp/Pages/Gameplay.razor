@@ -28,9 +28,9 @@
 	}
 
 	.btn-rounded {
-		border-radius: 50px; /* make the button fully rounded */
-		padding: 10px 20px; /* adjust the padding to your preference */
-		font-size: 16px; /* adjust the font size to your preference */
+		border-radius: 50px; 
+		padding: 10px 20px;
+		font-size: 16px;
 		font-weight: 500;
 	}
 
@@ -189,7 +189,7 @@
 							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
 							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@buttonDisabled">PASS</button>
 
-							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="LeaveGame">
+							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Game.ResetRound(); }">
 								← Leave Game
 							</button>
 						</div>

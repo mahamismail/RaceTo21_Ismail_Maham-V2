@@ -926,11 +926,7 @@ D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorA
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\build-gz\zdRWXG1m.gz
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\build-gz\sOH8CYQB.gz
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\blazor.satelliteasm.props
-D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\Component.razor.g.cs
-D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\Razor\Pages\Component.razor.g.cs
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\NumberOfPlayers.razor.g.cs
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\Razor\Pages\NumberOfPlayers.razor.g.cs
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\OverallScore.razor.g.cs
-D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\RazorDeclaration\Pages\RoundScore.razor.g.cs
 D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\Razor\Pages\OverallScore.razor.g.cs
-D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\obj\Debug\net5.0\Razor\Pages\RoundScore.razor.g.cs

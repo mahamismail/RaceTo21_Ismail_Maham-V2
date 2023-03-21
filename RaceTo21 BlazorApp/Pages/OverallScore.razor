@@ -136,14 +136,14 @@
 				@if (overallWinner == null)
 				{
 					<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.PlayerTurn; Game.CheckIfCurrent(); Game.ResetRound(); GoToGamePage(); }">BEGIN ROUND @(Game.rounds + 1)</button>
-					<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="LeaveGame">
+					<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="() => { LeaveGame(); Game.ResetRound(); }">
 						← Leave Game
 					</button>
 				}
 				else
 				{
 					<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { GoToPlayerPage(); Index.SetUpGame();}">Play Again</button>
-					<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="LeaveGame">
+					<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="() => { LeaveGame(); Game.ResetRound(); }">
 						← Exit Game
 					</button>
 				}
