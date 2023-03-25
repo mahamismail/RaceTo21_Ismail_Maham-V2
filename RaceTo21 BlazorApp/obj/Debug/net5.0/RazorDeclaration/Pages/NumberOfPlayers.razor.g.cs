@@ -91,8 +91,10 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 142 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\NumberOfPlayers.razor"
+#line 152 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\NumberOfPlayers.razor"
        
+
+	bool isNameEmpty = true;
 
 	private void GoToScorePage()
 	{

@@ -165,54 +165,55 @@ namespace RaceTo21_BlazorApp
         public static bool CheckForRoundWin()
         {
             /* if playerstatus is win then return true
-             * if playerstatus is stay or active, false, unless counter is one less the number of players (counter = numOfPlayers -1) 
-             * if playerstatus is bust return false.
-             */
-
+        * if playerstatus is stay or active, false, unless counter is one less the number of players (counter = numOfPlayers -1) 
+        * if playerstatus is bust return false.
+        */
+            
             int counter = 0;
-            int stayers = 0;
+            int stayer = 0;
+            int activePlayerIndex = players.FindIndex(p => p.status == PlayerStatus.active);
+
             foreach (var player in players)
             {
                 if (player.status == PlayerStatus.win)
                 {
+                    player.isWinner = true;
                     return true;
+                }
+                else if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
+                {
+                    stayer++;
+                    if (counter == players.Count - 1)
+                    {
+                        if (activePlayerIndex != -1)
+                        {
+                            // There is an active player in the list
+                            Player activePlayer = players[activePlayerIndex];
+                            players[activePlayerIndex].isWinner = true;
+                            players[activePlayerIndex].status = PlayerStatus.win;
+                            return true;
+
+                        }
+                    }
                 }
                 else if (player.status == PlayerStatus.bust)
                 {
                     counter++;
                     if (counter == players.Count - 1)
                     {
-                        return true;
-                    }
-                }
-                else if (player.status == PlayerStatus.stay)
-                {
-                    counter++;
-                    stayers++;
-                    if (counter == players.Count - 1)
-                    {
-                        return true;
-                    }
-                    else if (stayers == players.Count)
-                    {
-                        for (var i = 0; i < numberOfPlayers; i++)
+                        if (activePlayerIndex != -1)
                         {
-                            players[i].status = PlayerStatus.tie;
+                            // There is an active player in the list
+                            Player activePlayer = players[activePlayerIndex];
+                            players[activePlayerIndex].isWinner = true;
+                            players[activePlayerIndex].status = PlayerStatus.win;
+                            return true;
+
                         }
-                        return false;
+                        
                     }
+                    
                 }
-                
-                else if (player.status == PlayerStatus.active)
-                {
-                    if (counter == players.Count - 1)
-                    {
-                        player.status = PlayerStatus.win;
-                        return true;
-                    }
-                }
-
-
             }
             return false;
         }

@@ -7,7 +7,6 @@ namespace RaceTo21_BlazorApp
 		stay,
 		bust,
 		win,
-		tie,
 	}
 }
 

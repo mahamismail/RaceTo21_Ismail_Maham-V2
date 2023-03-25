@@ -125,13 +125,23 @@
 								<div class="form-group">
 									<label for="playerInput@(playerNumber)">Player @(playerNumber + 1)</label>
 									<input type="text" class="form-control" @bind-value="Game.tempNames[playerNumber]" />
+
+									@if (string.IsNullOrEmpty(Game.tempNames[playerNumber]))
+									{
+										isNameEmpty = true;
+									}
+									else
+									{
+										isNameEmpty = false;
+									}
+
 								</div>
 							</div>
 						}
 					</div>
 				}
 
-				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToScorePage(); }">     PLAY     </button>
+				<button class="btn btn-purple btn-rounded mt-4" type="button" disabled="@(isNameEmpty)" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToScorePage(); }">     PLAY     </button>
 				break;
 		}
 
@@ -140,6 +150,8 @@
 
 
 @code {
+
+	bool isNameEmpty = true;
 
 	private void GoToScorePage()
 	{

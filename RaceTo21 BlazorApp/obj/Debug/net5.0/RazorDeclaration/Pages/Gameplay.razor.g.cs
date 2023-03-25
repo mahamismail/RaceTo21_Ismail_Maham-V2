@@ -94,7 +94,7 @@ using RaceTo21_BlazorApp;
 #line 204 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
-	bool buttonDisabled = false;
+	bool ButtonsDisabled = false;
 
 	private void LeaveGame()
 	{
@@ -109,7 +109,7 @@ using RaceTo21_BlazorApp;
 
 	private void DisableButtons()
 	{
-		buttonDisabled = true;
+		ButtonsDisabled = true;
 	}
 
 	private void UpdatePlayerList()
@@ -132,7 +132,7 @@ using RaceTo21_BlazorApp;
 
 	private string ContainerColor(Player player)
 	{
-		if (player.isWinner == true)
+		if (player.isWinner == true || player.status == PlayerStatus.win)
 		{
 			return "green-solid";
 		}
@@ -144,11 +144,6 @@ using RaceTo21_BlazorApp;
 		{
 			return "purple-solid";
 		}
-		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.tie)
-		{
-			return "grey-solid";
-		}
-
 		return "purple-outline";
 	}
 

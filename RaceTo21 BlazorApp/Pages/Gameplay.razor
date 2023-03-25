@@ -141,7 +141,7 @@
 	{
 		case AllTasks.PlayerTurn:
 
-			<h2 class="mt-4" style="margin-bottom: 10px;">Round @(Game.rounds+1)</h2>
+			<h2 class="mt-4" style="margin-bottom: 10px;">Round @(Game.rounds + 1)</h2>
 			<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
 				<p>Score exactly 21 points or the highest possible <br /> number under 21 to win this round!</p>
 			</div>
@@ -183,13 +183,13 @@
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
 						<div style="display:flex; flex-direction: row; justify-items: flex-end; align-items: center;">
-							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@buttonDisabled">PICK 1 CARD</button>
-							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 2 CARDS</button>
-							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@buttonDisabled">PICK 3 CARDS</button>
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@ButtonsDisabled">PICK 1 CARD</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@ButtonsDisabled">PICK 2 CARDS</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@ButtonsDisabled">PICK 3 CARDS</button>
 							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
-							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@buttonDisabled">PASS</button>
+							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@ButtonsDisabled">PASS</button>
 
-							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Game.ResetRound(); }">
+							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Game.ResetRound(); Index.SetUpGame(); }">
 								← Leave Game
 							</button>
 						</div>
@@ -203,7 +203,7 @@
 
 @code {
 
-	bool buttonDisabled = false;
+	bool ButtonsDisabled = false;
 
 	private void LeaveGame()
 	{
@@ -218,7 +218,7 @@
 
 	private void DisableButtons()
 	{
-		buttonDisabled = true;
+		ButtonsDisabled = true;
 	}
 
 	private void UpdatePlayerList()
@@ -241,7 +241,7 @@
 
 	private string ContainerColor(Player player)
 	{
-		if (player.isWinner == true)
+		if (player.isWinner == true || player.status == PlayerStatus.win)
 		{
 			return "green-solid";
 		}
@@ -253,11 +253,6 @@
 		{
 			return "purple-solid";
 		}
-		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.tie)
-		{
-			return "grey-solid";
-		}
-
 		return "purple-outline";
 	}
 

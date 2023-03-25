@@ -12,6 +12,7 @@ namespace RaceTo21_BlazorApp
 		public int overallScore;
 		public bool isCurrentPlayer;
 		public bool isWinner;
+		
 
 		public Player(string n)
 		{
