@@ -91,15 +91,24 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 204 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+#line 205 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
-	bool ButtonsDisabled = false;
+	bool drawButtonsDisabled = false;
+	bool passButtonDisabled = true;
 
 	private void LeaveGame()
 	{
 
 		NavigationManager.NavigateTo("/");
+	}
+
+	private void DisablePassButton()
+	{
+		if (Game.turnsTaken == Game.players.Count)
+		{
+			passButtonDisabled = false;
+		}
 	}
 
 	private void GoToOverallScore()
@@ -109,7 +118,8 @@ using RaceTo21_BlazorApp;
 
 	private void DisableButtons()
 	{
-		ButtonsDisabled = true;
+		drawButtonsDisabled = true;
+		passButtonDisabled = true;
 	}
 
 	private void UpdatePlayerList()

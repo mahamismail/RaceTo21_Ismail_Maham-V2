@@ -71,7 +71,7 @@
 	}
 
 	.container {
-		padding: 0 0 80px 0;
+		padding: 0 0 200px 0;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -153,13 +153,14 @@
 						DisableButtons();
 						<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
 							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ <b>@player.name</b> wins! ~ 🎊</h4>
-							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); }">View Scores</button>
+							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); Game.rounds++; }">View Scores</button>
 						</div>
 					}
 				}
 
 				@foreach (Player player in Game.players)
 				{
+					DisablePassButton();
 					<div id="Player@(Game.players.IndexOf(player))" style="flex-direction: row; flex-wrap: nowrap; justify-content: flex-start; margin: 10px 30px 0 30px; display: inline-block;">
 						<label class="@(player.isCurrentPlayer || player.isWinner ? "purple-text" : " ")" style="font-weight: bold; font-size: 20px">@player.name</label>
 						<div style="display:flex; flex-direction: row; justify-content: flex-start; align-items: center;">
@@ -183,13 +184,13 @@
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
 						<div style="display:flex; flex-direction: row; justify-items: flex-end; align-items: center;">
-							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@ButtonsDisabled">PICK 1 CARD</button>
-							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@ButtonsDisabled">PICK 2 CARDS</button>
-							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@ButtonsDisabled">PICK 3 CARDS</button>
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@drawButtonsDisabled">PICK 1 CARD</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">PICK 2 CARDS</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">PICK 3 CARDS</button>
 							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
-							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@ButtonsDisabled">PASS</button>
+							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@passButtonDisabled">PASS</button>
 
-							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Game.ResetRound(); Index.SetUpGame(); }">
+							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Index.SetUpGame(); }">
 								← Leave Game
 							</button>
 						</div>
@@ -203,12 +204,21 @@
 
 @code {
 
-	bool ButtonsDisabled = false;
+	bool drawButtonsDisabled = false;
+	bool passButtonDisabled = true;
 
 	private void LeaveGame()
 	{
 
 		NavigationManager.NavigateTo("/");
+	}
+
+	private void DisablePassButton()
+	{
+		if (Game.turnsTaken == Game.players.Count)
+		{
+			passButtonDisabled = false;
+		}
 	}
 
 	private void GoToOverallScore()
@@ -218,7 +228,8 @@
 
 	private void DisableButtons()
 	{
-		ButtonsDisabled = true;
+		drawButtonsDisabled = true;
+		passButtonDisabled = true;
 	}
 
 	private void UpdatePlayerList()

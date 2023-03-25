@@ -12,9 +12,8 @@ namespace RaceTo21_BlazorApp
         public static Deck deck = new Deck(); // deck of cards
         public static int currentPlayer = 0; // current player on list
         public static AllTasks nextTask; // keeps track of game state
-        public static bool cheating = true; // lets you cheat for testing purposes if true
-
         public static int rounds = 0; // the number of rounds played
+        public static int turnsTaken = 0;
 
         public Game(CardTable c) // called in Game Setup
         {
@@ -70,14 +69,16 @@ namespace RaceTo21_BlazorApp
                     }
                 }
             }
+            turnsTaken++;
             CheckForRoundEnd();
+            
         }
 
         public static void CheckForRoundEnd()
         {
             if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
             {
-                rounds++;
+                //rounds++;
                 Player winner = DoRoundScoring(); // adds scores of players within the Round.
             }
             else
@@ -129,7 +130,7 @@ namespace RaceTo21_BlazorApp
         public static void CheckIfCurrent()
         {
             foreach (Player player in players)
-                if (players.IndexOf(player) == currentPlayer)
+                if (players.IndexOf(player) == currentPlayer && player.status == PlayerStatus.active)
                 {
                     player.isCurrentPlayer = true;
                 }
@@ -180,10 +181,10 @@ namespace RaceTo21_BlazorApp
                     player.isWinner = true;
                     return true;
                 }
-                else if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active)
+                else if (player.status == PlayerStatus.stay)
                 {
                     stayer++;
-                    if (counter == players.Count - 1)
+                    if (counter == players.Count - 1 || stayer == players.Count - 1 || stayer + counter == players.Count - 1)
                     {
                         if (activePlayerIndex != -1)
                         {
@@ -210,9 +211,9 @@ namespace RaceTo21_BlazorApp
                             return true;
 
                         }
-                        
+
                     }
-                    
+
                 }
             }
             return false;
@@ -302,11 +303,12 @@ namespace RaceTo21_BlazorApp
          * Writes to console. 
         ************************************/
         public static void ResetRound()
-        {   
+        {
 
             //players.Remove(winner);
             currentPlayer = 0;
             CheckIfCurrent();
+            turnsTaken = 0;
 
             deck = new Deck();
             deck.Shuffle();

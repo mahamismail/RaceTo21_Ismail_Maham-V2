@@ -101,6 +101,8 @@ using RaceTo21_BlazorApp;
 		Game game = new Game(cardTable);
 		Game.tempNames = new string[8];
 		Game.players = new List<Player>();
+		Game.rounds = 0;
+		Game.ResetRound();
 	}
 
 	private void GoToPlayerPage()
