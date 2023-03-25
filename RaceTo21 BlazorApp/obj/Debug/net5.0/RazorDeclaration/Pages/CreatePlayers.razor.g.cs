@@ -91,23 +91,25 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 152 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\CreatePlayers.razor"
+#line 160 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\CreatePlayers.razor"
        
 
-	bool isNameEmpty = true;
+	bool isNameEmpty = true; // checks if each player has a name
 
+	//Navigates to the overall score page, while also adding players.
 	private void GoToScorePage()
 	{
 
 		for (var i = 0; i < Game.numberOfPlayers; i++)
 		{
-			Game.AddPlayer(Game.tempNames[i]);
+			Game.AddPlayer(Game.tempNames[i]); // Adding each player to the players list.
 			Console.WriteLine($"Player {Game.tempNames[i]} added!");
 		}
 
 		NavigationManager.NavigateTo("/OverallScore");
 	}
 
+	//Navigate back to the Title/Index Page
 	private void ReturnToMain()
 	{
 

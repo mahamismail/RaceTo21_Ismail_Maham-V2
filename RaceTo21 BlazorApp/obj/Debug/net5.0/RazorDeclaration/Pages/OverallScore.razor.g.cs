@@ -91,39 +91,46 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 158 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
+#line 168 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
        
 
-	private Player overallWinner;
+	private Player overallWinner; // variable to hold winner, when there is one
 
+	// on initialization of this page, overallWinner is displayed
+	// returns null if no one has won yet.
 	protected override void OnInitialized()
 	{
-		overallWinner = Game.DoOverallScoring();
+		overallWinner = Game.DoOverallScoring();  // gets the Player winner if someone won, else returns null
 	}
 
+	//changes CSS for outer container, if winner is declared.
 	private string OuterContainerChange()
 	{
-		if (overallWinner != null)
+		if (overallWinner != null) // if overall winner is not null, make container purple
 		{
 			return "purple-outline";
 		}
 		return "";
 	}
 
+	//************* NAV FUNCTIONS **********************///	
+
+	// Navigate to Create Players page
 	private void GoToPlayerPage()
 	{
 		NavigationManager.NavigateTo("/CreatePlayers");
 	}
 
+	// Navigate back to Title/Index Game and leave the game mid way
 	private void LeaveGame()
 	{
 
 		NavigationManager.NavigateTo("/");
 	}
 
+	// Navigate to the main game to continue another round.
 	private void GoToGamePage()
 	{
-
 		NavigationManager.NavigateTo("/Gameplay");
 	}
 
