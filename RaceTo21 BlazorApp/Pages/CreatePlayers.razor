@@ -1,4 +1,4 @@
-﻿@page "/NumberOfPlayers"
+﻿@page "/CreatePlayers"
 @using RaceTo21_BlazorApp
 
 @inject NavigationManager NavigationManager
@@ -46,8 +46,8 @@
 	}
 
 	.form-control {
-		background-color: #D3D3D3; /* set the background color to grey */
-		width: 200px; /* set the width to your desired size */
+		background-color: #D3D3D3;
+		width: 200px;
 		font-size: 20px;
 		font-weight: bold;
 		text-align: center;
@@ -90,6 +90,7 @@
 	}
 </style>
 
+<!-- Linking New Font: Montserrat -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -100,21 +101,26 @@
 		{
 			case AllTasks.GetNumberOfPlayers:
 
-				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="ReturnToMain">
-					← Back
-				</button>
+				//Back button
+				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="ReturnToMain"> ← Back</button>
+
+				//HOW MANY PLAYERS? heading
 				<h2 class="text-center md-4">How many players?</h2>
+
 				<input type="number" class="form-control" id="numberInput" min="2" max="8" step="1" @bind-value="Game.numberOfPlayers">
+
+				//PLAY BUTTON
 				<button class="btn btn-purple btn-rounded mt-4" type="button" @onclick="() => { Game.nextTask = AllTasks.GetNames; }">PLAY</button>
 				break;
 
 			case AllTasks.GetNames:
 
-				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="() => { Game.nextTask = AllTasks.GetNumberOfPlayers; }">
-					← Back
-				</button>
+				<button type="button" class="btn btn-white btn-rounded mt-2" @onclick="() => { Game.nextTask = AllTasks.GetNumberOfPlayers; }"> ← Back</button>
+
+				//PLAYER NAMES heading
 				<h2 class="text-center mt-4">Player Names</h2>
 
+				//ALL PLAYER NAME INPUTS
 				@if (Game.numberOfPlayers > 0)
 				{
 					<div class="row mt-12" style="padding: 5px; display: flex; flex-direction: row;">
@@ -126,7 +132,8 @@
 									<label for="playerInput@(playerNumber)">Player @(playerNumber + 1)</label>
 									<input type="text" class="form-control" @bind-value="Game.tempNames[playerNumber]" />
 
-									@if (string.IsNullOrEmpty(Game.tempNames[playerNumber]))
+									<!-- This makes sure the PLAY Butto is disabled if the all players don't have names. -->
+									@if (string.IsNullOrEmpty(Game.tempNames[playerNumber])) // checks if the input is empty of not
 									{
 										isNameEmpty = true;
 									}
@@ -141,6 +148,7 @@
 					</div>
 				}
 
+				// PLAY BUTTON
 				<button class="btn btn-purple btn-rounded mt-4" type="button" disabled="@(isNameEmpty)" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToScorePage(); }">     PLAY     </button>
 				break;
 		}
@@ -151,20 +159,22 @@
 
 @code {
 
-	bool isNameEmpty = true;
+	bool isNameEmpty = true; // checks if each player has a name
 
+	//Navigates to the overall score page, while also adding players.
 	private void GoToScorePage()
 	{
 
 		for (var i = 0; i < Game.numberOfPlayers; i++)
 		{
-			Game.AddPlayer(Game.tempNames[i]);
+			Game.AddPlayer(Game.tempNames[i]); // Adding each player to the players list.
 			Console.WriteLine($"Player {Game.tempNames[i]} added!");
 		}
 
 		NavigationManager.NavigateTo("/OverallScore");
 	}
 
+	//Navigate back to the Title/Index Page
 	private void ReturnToMain()
 	{
 

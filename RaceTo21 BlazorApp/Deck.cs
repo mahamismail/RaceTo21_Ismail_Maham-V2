@@ -61,15 +61,6 @@ namespace RaceTo21_BlazorApp
 
                 }
             }
-
-            //Uncomment to view the png names of each card
-            /* View png names
-            foreach (string key in imageIDs.Keys)
-            {
-                Console.Write(key + ":" + imageIDs[key]); // show all png names
-                Console.WriteLine();
-            }
-            */
         }
 
         /* Function: Shuffle() **********

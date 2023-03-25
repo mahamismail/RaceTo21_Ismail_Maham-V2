@@ -91,18 +91,14 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 205 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
+#line 234 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Gameplay.razor"
        
 
-	bool drawButtonsDisabled = false;
-	bool passButtonDisabled = true;
+	bool drawButtonsDisabled = false; // to disable all Draw A Card button
+	bool passButtonDisabled = true; // to disable the Pass button // is disabled by default in the first turns of each player
 
-	private void LeaveGame()
-	{
 
-		NavigationManager.NavigateTo("/");
-	}
-
+	//Function to check when to disable PASS button
 	private void DisablePassButton()
 	{
 		if (Game.turnsTaken == Game.players.Count)
@@ -111,52 +107,35 @@ using RaceTo21_BlazorApp;
 		}
 	}
 
-	private void GoToOverallScore()
-	{
-		NavigationManager.NavigateTo("/OverallScore");
-	}
-
-	private void DisableButtons()
+	/* Function to disable all DRAW & PASS
+	* buttons when the round is over.*/
+	private void DisableAllButtons()
 	{
 		drawButtonsDisabled = true;
 		passButtonDisabled = true;
 	}
 
-	private void UpdatePlayerList()
-	{
-		foreach (Player player in Game.players)
-		{
-			if (player.isCurrentPlayer == true)
-			{
-				StateHasChanged();
-			}
-		}
+	/****************************CSS FUNCTIONS****************************/
 
-		JSRuntime.InvokeVoidAsync("scrollToPlayerList");
-	}
-
-	private async Task ScrollToPlayerList()
-	{
-		await JSRuntime.InvokeVoidAsync("scrollToElement", "playerList");
-	}
-
+	// Function to update each Player container's color according to status.
 	private string ContainerColor(Player player)
 	{
 		if (player.isWinner == true || player.status == PlayerStatus.win)
 		{
-			return "green-solid";
+			return "green-solid"; // turns green if player won
 		}
 		else if (player.status == PlayerStatus.bust || player.status == PlayerStatus.stay)
 		{
-			return "grey-solid";
+			return "grey-solid"; // turns gray if player stayed or busted
 		}
 		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.active)
 		{
-			return "purple-solid";
+			return "purple-solid"; // turns purple if it is the player's turn
 		}
-		return "purple-outline";
+		return "purple-outline"; // turns outlined if it is not their turn
 	}
 
+	// Function to update each player's status
 	private string PlayerStatusToString(Player player)
 	{
 		if (player.status == PlayerStatus.bust)
@@ -177,6 +156,22 @@ using RaceTo21_BlazorApp;
 		}
 		return "";
 	}
+
+	/************* NAV FUNCTIONS **************************/
+
+	// Function to navigate to Title Page/Index Page
+	private void LeaveGame()
+	{
+
+		NavigationManager.NavigateTo("/");
+	}
+
+	// Private function to go to the Overall Score Page
+	private void GoToOverallScore()
+	{
+		NavigationManager.NavigateTo("/OverallScore");
+	}
+
 
 #line default
 #line hidden

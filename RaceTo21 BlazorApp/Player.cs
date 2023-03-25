@@ -8,10 +8,10 @@ namespace RaceTo21_BlazorApp
 		public string name { get; private set; }
 		public List<Card> cards = new List<Card>();
 		public PlayerStatus status = PlayerStatus.active;
-		public int score;
-		public int overallScore;
-		public bool isCurrentPlayer;
-		public bool isWinner;
+		public int score; // round score
+		public int overallScore; // Game Score
+		public bool isCurrentPlayer; // checks if this the current player or not
+		public bool isWinner; // checks if this player is a winner or not
 		
 
 		public Player(string n)
@@ -33,6 +33,7 @@ namespace RaceTo21_BlazorApp
 
 		/* Function: ResetPlayer() **********
 		 * Sets all players to active and clears all cards in the player's hand.
+		 * Also resets multiple propperties of the player.
 		 * Called by ResetRound() method.
 		************************************/
 		public void ResetPlayer()

@@ -57,6 +57,7 @@
 	}
 </style>
 
+<!-- Linking New Font: Montserrat -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
@@ -64,11 +65,13 @@
 <div class="container">
 	<div class="container">
 		<img src="card_assets/SUITS.png" alt="The Four Suits" />
-		<h1 class="text-center" style="text-align:center">Race To 21</h1>
+		<h1 class="text-center" style="text-align:center">Race To 21</h1> <!-- TITLE -->
 		<p>
+			<!-- Introduction-->
 			<b>Hey there, card sharks!</b><br><br>
 			Draw cards and try to get as close to <b>21 points</b> as possible without going over. The game keeps going until there's only one player left standing or until everyone gives up. To determine the ultimate winner, keep playing multiple rounds until someone has a total of <b>50 or more points</b> across all rounds. It's a fun way to test your luck and strategy with a deck of cards. So what are you waiting for? Shuffle up and let's play!
 		</p>
+		<!-- BEGIN button -->
 		<button class="btn btn-purple btn-rounded" type="button" @onclick="() => { SetUpGame(); GoToPlayerPage(); }">BEGIN GAME</button>
 	</div>
 </div>
@@ -77,8 +80,13 @@
 
 @code {
 
-	public static CardTable cardTable = new CardTable();
+	public static CardTable cardTable = new CardTable(); // getting a cardTable instance
 
+	/* Function: SetUpGame() **********
+	 * Sets up the game, cardtable, players and rounds.
+	 * Also makes sure rounds are reset in case game is set up again.
+	 * Called in Index/Title page and also in OverallScore page when game is over.
+	************************************/
 	public static void SetUpGame()
 	{
 		Game game = new Game(cardTable);
@@ -88,8 +96,9 @@
 		Game.ResetRound();
 	}
 
+	//Nav function to navigate to the Players page.
 	private void GoToPlayerPage()
 	{
-		NavigationManager.NavigateTo("/NumberOfPlayers");
+		NavigationManager.NavigateTo("/CreatePlayers");
 	}
 }

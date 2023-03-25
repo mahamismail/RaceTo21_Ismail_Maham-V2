@@ -74,6 +74,10 @@ namespace RaceTo21_BlazorApp
             
         }
 
+        /* Function: CheckForRoundEnd() **********
+         * This function checks if the current round has ended or not and moves on to the next turn.
+         * It is called at the end of the DrawCard function
+        ************************************/
         public static void CheckForRoundEnd()
         {
             if (CheckForRoundWin() || !CheckActivePlayers()) // do this is someone wins a round or there are no active players left.
@@ -125,8 +129,10 @@ namespace RaceTo21_BlazorApp
             return score;
         }
 
-        /**************************************************************************** NEEDS TO BE ADDED IN THE END
-         * *********************************************************************************************/
+        /* Function: CheckIfCurrent() **********
+        * Checks which player is the current player
+        * Called in CheckForRoundEnd() and ResetRound()
+        ************************************/
         public static void CheckIfCurrent()
         {
             foreach (Player player in players)
@@ -166,17 +172,17 @@ namespace RaceTo21_BlazorApp
         public static bool CheckForRoundWin()
         {
             /* if playerstatus is win then return true
-        * if playerstatus is stay or active, false, unless counter is one less the number of players (counter = numOfPlayers -1) 
-        * if playerstatus is bust return false.
-        */
-            
-            int counter = 0;
-            int stayer = 0;
+            * if playerstatus is stay or active, it is false, but it checks a condition if only one Active Player is left and can return true
+            * if playerstatus is bust returns false, but checks a condition if only one Active Player is left and can return true
+            */
+
+            int busteds = 0; // a count of busted players
+            int stayer = 0; // a count of stayed players
             int activePlayerIndex = players.FindIndex(p => p.status == PlayerStatus.active);
 
             foreach (var player in players)
             {
-                if (player.status == PlayerStatus.win)
+                if (player.status == PlayerStatus.win) // if player wins
                 {
                     player.isWinner = true;
                     return true;
@@ -184,11 +190,11 @@ namespace RaceTo21_BlazorApp
                 else if (player.status == PlayerStatus.stay)
                 {
                     stayer++;
-                    if (counter == players.Count - 1 || stayer == players.Count - 1 || stayer + counter == players.Count - 1)
+                    if (busteds == players.Count - 1 || stayer == players.Count - 1 || stayer + busteds == players.Count - 1) // if all busted but one, OR all stayed but one, OR all stayed and busted but one. 
                     {
                         if (activePlayerIndex != -1)
                         {
-                            // There is an active player in the list
+                            // Get the only active player in the list
                             Player activePlayer = players[activePlayerIndex];
                             players[activePlayerIndex].isWinner = true;
                             players[activePlayerIndex].status = PlayerStatus.win;
@@ -197,14 +203,14 @@ namespace RaceTo21_BlazorApp
                         }
                     }
                 }
-                else if (player.status == PlayerStatus.bust)
+                else if (player.status == PlayerStatus.bust) // if player bust
                 {
-                    counter++;
-                    if (counter == players.Count - 1)
+                    busteds++;
+                    if (busteds == players.Count - 1)
                     {
                         if (activePlayerIndex != -1)
                         {
-                            // There is an active player in the list
+                            // Get the only active player in the list
                             Player activePlayer = players[activePlayerIndex];
                             players[activePlayerIndex].isWinner = true;
                             players[activePlayerIndex].status = PlayerStatus.win;
@@ -263,7 +269,6 @@ namespace RaceTo21_BlazorApp
         {
             foreach (var player in players)
             {
-                //int counter = 0;
 
                 if (player.status == PlayerStatus.win) // someone hit 21
                 {
@@ -272,17 +277,12 @@ namespace RaceTo21_BlazorApp
 
                 if (player.status == PlayerStatus.bust) // player went bust...
                 {
-                    //counter++;
                     player.overallScore -= (player.score - 21) ; // DEDUCT THE SCORE FROM THE PLAYER'S OVERALL SCORE IF BUST
                 }
 
                 if (player.status == PlayerStatus.stay || player.status == PlayerStatus.active) // player went bust...
                 {
                     player.overallScore += player.score;
-                    //if (counter == players.Count - 1)
-                    //{
-                    //    player.overallScore += player.score;
-                    //}
                 }
 
                 if (player.overallScore >= cardTable.overallTarget)

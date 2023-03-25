@@ -91,11 +91,16 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 78 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Index.razor"
+#line 81 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\Index.razor"
        
 
-	public static CardTable cardTable = new CardTable();
+	public static CardTable cardTable = new CardTable(); // getting a cardTable instance
 
+	/* Function: SetUpGame() **********
+	 * Sets up the game, cardtable, players and rounds.
+	 * Also makes sure rounds are reset in case game is set up again.
+	 * Called in Index/Title page and also in OverallScore page when game is over.
+	************************************/
 	public static void SetUpGame()
 	{
 		Game game = new Game(cardTable);
@@ -105,9 +110,10 @@ using RaceTo21_BlazorApp;
 		Game.ResetRound();
 	}
 
+	//Nav function to navigate to the Players page.
 	private void GoToPlayerPage()
 	{
-		NavigationManager.NavigateTo("/NumberOfPlayers");
+		NavigationManager.NavigateTo("/CreatePlayers");
 	}
 
 #line default

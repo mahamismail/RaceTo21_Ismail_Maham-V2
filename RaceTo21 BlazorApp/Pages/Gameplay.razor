@@ -28,7 +28,7 @@
 	}
 
 	.btn-rounded {
-		border-radius: 50px; 
+		border-radius: 50px;
 		padding: 10px 20px;
 		font-size: 16px;
 		font-weight: 500;
@@ -123,7 +123,7 @@
 	.grey-solid {
 		background-color: #D3D3D3;
 		color: black;
-		border: 2px solid; 
+		border: 2px solid;
 		border-color: #D3D3D3;
 	}
 
@@ -132,32 +132,43 @@
 	}
 </style>
 
+<!-- Linking New Font: Montserrat -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 <div class="container column" id="playerList" style="align-items: center; margin: auto">
+	
 	@switch (Game.nextTask)
 	{
 		case AllTasks.PlayerTurn:
 
-			<h2 class="mt-4" style="margin-bottom: 10px;">Round @(Game.rounds + 1)</h2>
+			<!-- HEADINGS -->
+			<h2 class="mt-4" style="margin-bottom: 10px;">Round @(Game.rounds + 1)</h2> <!-- Round # -->
 			<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
+				<!-- Game Goal -->
 				<p>Score exactly 21 points or the highest possible <br /> number under 21 to win this round!</p>
 			</div>
+
 			<div style="margin-bottom: 10px; display: flex; flex-direction: column; align-items: flex-start;">
+
+				<!-- WINNER DISPLAY TEXT: If someone wins it is display here -->
 				@foreach (Player player in Game.players)
 				{
 					@if (player.isWinner == true)
 					{
-						DisableButtons();
+						DisableAllButtons();<!-- Disables all PASS and DRAW buttons is someone wins. -->
+
 						<div class="col" style="display: flex; justify-content: center; margin-bottom: 20px;">
 							<h4 style="font-weight: 400; margin-right: 20px; ">🎊 ~ <b>@player.name</b> wins! ~ 🎊</h4>
+
+							<!-- VIEW OVERALL SCORES BUTTON -->
 							<button type="button" class="btn btn-purple btn-rounded" @onclick="() => { Game.nextTask = AllTasks.ShowOverallScores; GoToOverallScore(); Game.rounds++; }">View Scores</button>
 						</div>
 					}
 				}
 
+				<!-- ALL PLAYER CONTAINERS -->
 				@foreach (Player player in Game.players)
 				{
 					DisablePassButton();
@@ -177,6 +188,7 @@
 				}
 			</div>
 
+			<!-- FIXED NAV WITH DRAW AND PASS BUTTONS -->
 			<div class="fixed-bottom">
 				<div class="nav greyNav">
 					<row class="row">
@@ -184,13 +196,30 @@
 							<label for="playerName" style="font-weight: bold; font-size: 20px">@Game.players[Game.currentPlayer].name's Turn</label>
 						</div>
 						<div style="display:flex; flex-direction: row; justify-items: flex-end; align-items: center;">
-							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@drawButtonsDisabled">PICK 1 CARD</button>
-							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">PICK 2 CARDS</button>
-							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px" @onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">PICK 3 CARDS</button>
-							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
-							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px" @onclick="() => { Game.DrawCards(0); }" disabled="@passButtonDisabled">PASS</button>
+							<button type="button" id="drawCard1" class="btn btn-purple btn-rounded" style="margin-left: 10px"
+									@onclick="() => { Game.DrawCards(1); /*UpdatePlayerList();*/ }" disabled="@drawButtonsDisabled">
+								PICK 1 CARD
+							</button>
+							<button type="button" id="drawCard2" class="btn btn-purple btn-rounded" style="margin-left: 10px"
+									@onclick="() => { Game.DrawCards(2); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">
+								PICK 2 CARDS
+							</button>
+							<button type="button" id="drawCard3" class="btn btn-purple btn-rounded" style="margin-left: 10px"
+									@onclick="() => { Game.DrawCards(3); /*UpdatePlayerList();*/  }" disabled="@drawButtonsDisabled">
+								PICK 3 CARDS
+							</button>
 
-							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; " @onclick="() => { LeaveGame(); Index.SetUpGame(); }">
+							<label style="margin-left: 10px; margin-right: 10px;">OR</label>
+
+							<!-- Pass Button -->
+							<button class="btn btn-purple btn-rounded" id="drawCard0" style="width: 200px"
+									@onclick="() => { Game.DrawCards(0); }" disabled="@passButtonDisabled">
+								PASS
+							</button>
+
+							<!-- Leave Game Button -->
+							<button type="button" class="btn btn-white btn-rounded mt-2" style="color:purple; "
+									@onclick="() => { LeaveGame(); Index.SetUpGame(); }">
 								← Leave Game
 							</button>
 						</div>
@@ -204,15 +233,11 @@
 
 @code {
 
-	bool drawButtonsDisabled = false;
-	bool passButtonDisabled = true;
+	bool drawButtonsDisabled = false; // to disable all Draw A Card button
+	bool passButtonDisabled = true; // to disable the Pass button // is disabled by default in the first turns of each player
 
-	private void LeaveGame()
-	{
 
-		NavigationManager.NavigateTo("/");
-	}
-
+	//Function to check when to disable PASS button
 	private void DisablePassButton()
 	{
 		if (Game.turnsTaken == Game.players.Count)
@@ -221,52 +246,35 @@
 		}
 	}
 
-	private void GoToOverallScore()
-	{
-		NavigationManager.NavigateTo("/OverallScore");
-	}
-
-	private void DisableButtons()
+	/* Function to disable all DRAW & PASS
+	* buttons when the round is over.*/
+	private void DisableAllButtons()
 	{
 		drawButtonsDisabled = true;
 		passButtonDisabled = true;
 	}
 
-	private void UpdatePlayerList()
-	{
-		foreach (Player player in Game.players)
-		{
-			if (player.isCurrentPlayer == true)
-			{
-				StateHasChanged();
-			}
-		}
+	/****************************CSS FUNCTIONS****************************/
 
-		JSRuntime.InvokeVoidAsync("scrollToPlayerList");
-	}
-
-	private async Task ScrollToPlayerList()
-	{
-		await JSRuntime.InvokeVoidAsync("scrollToElement", "playerList");
-	}
-
+	// Function to update each Player container's color according to status.
 	private string ContainerColor(Player player)
 	{
 		if (player.isWinner == true || player.status == PlayerStatus.win)
 		{
-			return "green-solid";
+			return "green-solid"; // turns green if player won
 		}
 		else if (player.status == PlayerStatus.bust || player.status == PlayerStatus.stay)
 		{
-			return "grey-solid";
+			return "grey-solid"; // turns gray if player stayed or busted
 		}
 		else if (player.isCurrentPlayer == true && player.status == PlayerStatus.active)
 		{
-			return "purple-solid";
+			return "purple-solid"; // turns purple if it is the player's turn
 		}
-		return "purple-outline";
+		return "purple-outline"; // turns outlined if it is not their turn
 	}
 
+	// Function to update each player's status
 	private string PlayerStatusToString(Player player)
 	{
 		if (player.status == PlayerStatus.bust)
@@ -287,4 +295,20 @@
 		}
 		return "";
 	}
+
+	/************* NAV FUNCTIONS **************************/
+
+	// Function to navigate to Title Page/Index Page
+	private void LeaveGame()
+	{
+
+		NavigationManager.NavigateTo("/");
+	}
+
+	// Private function to go to the Overall Score Page
+	private void GoToOverallScore()
+	{
+		NavigationManager.NavigateTo("/OverallScore");
+	}
+
 }

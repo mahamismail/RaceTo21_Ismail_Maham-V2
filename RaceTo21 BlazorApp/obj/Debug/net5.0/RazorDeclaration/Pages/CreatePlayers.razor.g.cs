@@ -76,14 +76,14 @@ using RaceTo21_BlazorApp.Shared;
 #line hidden
 #nullable disable
 #nullable restore
-#line 2 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
+#line 2 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\CreatePlayers.razor"
 using RaceTo21_BlazorApp;
 
 #line default
 #line hidden
 #nullable disable
-    [Microsoft.AspNetCore.Components.RouteAttribute("/OverallScore")]
-    public partial class OverallScore : Microsoft.AspNetCore.Components.ComponentBase
+    [Microsoft.AspNetCore.Components.RouteAttribute("/CreatePlayers")]
+    public partial class CreatePlayers : Microsoft.AspNetCore.Components.ComponentBase
     {
         #pragma warning disable 1998
         protected override void BuildRenderTree(Microsoft.AspNetCore.Components.Rendering.RenderTreeBuilder __builder)
@@ -91,40 +91,27 @@ using RaceTo21_BlazorApp;
         }
         #pragma warning restore 1998
 #nullable restore
-#line 158 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\OverallScore.razor"
+#line 152 "D:\NEU\Intermediate Programming\Week 5\RaceTo21_Ismail_Maham-V2\RaceTo21 BlazorApp\Pages\CreatePlayers.razor"
        
 
-	private Player overallWinner;
+	bool isNameEmpty = true;
 
-	protected override void OnInitialized()
+	private void GoToScorePage()
 	{
-		overallWinner = Game.DoOverallScoring();
-	}
 
-	private string OuterContainerChange()
-	{
-		if (overallWinner != null)
+		for (var i = 0; i < Game.numberOfPlayers; i++)
 		{
-			return "purple-outline";
+			Game.AddPlayer(Game.tempNames[i]);
+			Console.WriteLine($"Player {Game.tempNames[i]} added!");
 		}
-		return "";
+
+		NavigationManager.NavigateTo("/OverallScore");
 	}
 
-	private void GoToPlayerPage()
-	{
-		NavigationManager.NavigateTo("/CreatePlayers");
-	}
-
-	private void LeaveGame()
+	private void ReturnToMain()
 	{
 
 		NavigationManager.NavigateTo("/");
-	}
-
-	private void GoToGamePage()
-	{
-
-		NavigationManager.NavigateTo("/Gameplay");
 	}
 
 #line default
